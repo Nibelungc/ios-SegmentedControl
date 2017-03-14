@@ -13,8 +13,8 @@ protocol SegmentedControlDataSource: class {
     func segmentedControl(_ segmentedControl: SegmentedControl, titleAt index: Int) -> String
 }
 
-protocol SegmentedControlDelegate: class {
-    
+@objc protocol SegmentedControlDelegate: class {
+    @objc optional func segmentedControl(_ segmentedControl: SegmentedControl, didSelectItemAt index: Int)
 }
 
 struct SegmentedControlAttributes {
@@ -52,6 +52,7 @@ class SegmentedControl: UIScrollView {
     
     private func setupUI() {
         clipsToBounds = true
+        delaysContentTouches = false
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
         translatesAutoresizingMaskIntoConstraints = false

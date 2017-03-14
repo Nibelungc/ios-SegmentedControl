@@ -18,6 +18,7 @@ class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedCont
         automaticallyAdjustsScrollViewInsets = false
         segmentedControl.segmentedControlDatasource = self
         segmentedControl.segmentedControlDelegate = self
+        segmentedControl.backgroundColor = .groupTableViewBackground
         segmentedControl.reloadData()
     }
     
@@ -33,5 +34,8 @@ class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedCont
     
     //MARK: - SegmentedControlDelegate
     
+    func segmentedControl(_ segmentedControl: SegmentedControl, didSelectItemAt index: Int) {
+        print("\(titles[index]) - is selected")
+    }
 }
 

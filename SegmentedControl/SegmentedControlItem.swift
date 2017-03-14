@@ -23,6 +23,7 @@ struct SegmentedControlItemSize {
 }
 
 struct SegmentedControlItemAttributes {
+    var backgroundColor: UIColor = .clear
     var normalTitleColor: UIColor = .gray
     var selectedTitleColor: UIColor = .black
     var highlightedTitleColor: UIColor = .lightGray
@@ -33,34 +34,49 @@ struct SegmentedControlItemAttributes {
 
 class SegmentedControlItem: UIView {
     
+    //MARK: - Properties
+    
     private(set) var title: String
-    private(set) var titleLabel = UILabel()
+    private(set) var titleButton = UIButton()
     private var attributes: SegmentedControlItemAttributes
+    
+    //MARK: - Initialization
     
     init(title: String, attributes: SegmentedControlItemAttributes = SegmentedControlItemAttributes()) {
         self.title = title
         self.attributes = attributes
-        self.titleLabel.text = title
         super.init(frame: .zero)
         setupUI()
     }
     
-    func setupUI() {
-        addSubview(titleLabel)
-        titleLabel.textColor = .white
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.bindEdgesToSuperview(padding: attributes.margins)
-        titleLabel.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
-        titleLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
-        titleLabel.textAlignment = .center
-        titleLabel.font = attributes.titleFont
-        titleLabel.textColor = attributes.normalTitleColor
-        titleLabel.highlightedTextColor = attributes.highlightedTitleColor
-        titleLabel.font = attributes.titleFont
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        addSubview(titleButton)
+        setupTitleLabel()
+    }
+    
+    private func setupTitleLabel() {
+        titleButton.setTitleColor(attributes.normalTitleColor, for: .normal)
+        titleButton.setTitleColor(attributes.highlightedTitleColor, for: .highlighted)
+        titleButton.setTitleColor(attributes.selectedTitleColor, for: .selected)
+        titleButton.titleLabel!.font = attributes.titleFont
+        titleButton.setTitle(title, for: .normal)
+        titleButton.translatesAutoresizingMaskIntoConstraints = false
+        titleButton.bindEdgesToSuperview(orientation: .vertical)
+        titleButton.bindEdgesToSuperview(padding: attributes.margins, orientation: .horizontal)
+        titleButton.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
+        titleButton.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
+    }
+    
+    func setSelected(_ selected: Bool, animated: Bool) {
+        titleButton.isSelected = selected
+    }
+    
+    func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        titleButton.isHighlighted = highlighted
     }
     
     override var intrinsicContentSize: CGSize {
@@ -68,7 +84,7 @@ class SegmentedControlItem: UIView {
         let height: CGFloat
         switch attributes.size.width {
         case .fixed(let fixedWidth): width = fixedWidth
-        case .fitToContent: width = titleLabel.sizeThatFits(bounds.size).width + attributes.margins * 2
+        case .fitToContent: width = titleButton.sizeThatFits(bounds.size).width + attributes.margins * 2
         }
         switch attributes.size.height {
         case .fixed(let fixedHeight): height = fixedHeight
