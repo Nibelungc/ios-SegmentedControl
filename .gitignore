@@ -1,0 +1,26 @@
+# OS X
+.DS_Store
+ 
+# Xcode
+*.xccheckout
+*.DS_Store
+*xcuserdata*
+build/
+.idea
+ 
+!*/xcshareddata/*
+*.xccheckout
+*/xcuserdata/*
+
+# Carthage
+Carthage/Build
+ 
+# fastlane
+fastlane/report.xml
+fastlane/README.md
+fastlane/*report*
+*app.dSYM.zip
+
+# API Library Files
+Wrappers/Vendor
+Wrappers/Output
