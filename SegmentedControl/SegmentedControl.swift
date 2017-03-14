@@ -27,6 +27,8 @@ class SegmentedControl: UIScrollView {
     
     //MARK: - Private properties
     
+    weak var selectedSegment: SegmentedControlItem?
+    
     //MARK: - Public properties
     
     private(set) var contentView = UIView()
@@ -75,11 +77,21 @@ class SegmentedControl: UIScrollView {
                                                            height: .fixed(bounds.size.height))
             let item = SegmentedControlItem(title: title, attributes: itemAttributes)
             item.translatesAutoresizingMaskIntoConstraints = false
+            item.addTarget(self, action: #selector(segmentButtonTapped(sender:)), for: .touchUpInside)
             contentView.addSubview(item)
             segments.append(item)
         }
         UIView.bindViewsSuccessively(views: segments, inSuperview: contentView, padding: attributes.interitemSpacing)
     }
     
+    //MARK: - Actions
+    
+    func segmentButtonTapped(sender: SegmentedControlItem) {
+        let index = segments.index(of: sender)
+        selectedSegment?.isSelected = false
+        sender.isSelected = true
+        selectedSegment = sender
+        segmentedControlDelegate?.segmentedControl?(self, didSelectItemAt: index!)
+    }
 }
 

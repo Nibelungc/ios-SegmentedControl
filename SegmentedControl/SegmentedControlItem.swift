@@ -24,6 +24,7 @@ struct SegmentedControlItemSize {
 
 struct SegmentedControlItemAttributes {
     var backgroundColor: UIColor = .clear
+    var highlightedBackgroundColor: UIColor = UIColor.black.withAlphaComponent(0.15)
     var normalTitleColor: UIColor = .gray
     var selectedTitleColor: UIColor = .black
     var highlightedTitleColor: UIColor = .lightGray
@@ -32,13 +33,25 @@ struct SegmentedControlItemAttributes {
     var margins: CGFloat = 10
 }
 
-class SegmentedControlItem: UIView {
+class SegmentedControlItem: UIControl {
     
     //MARK: - Properties
     
     private(set) var title: String
     private(set) var titleButton = UIButton()
     private var attributes: SegmentedControlItemAttributes
+    override var isSelected: Bool {
+        didSet {
+            titleButton.isSelected = isSelected
+        }
+    }
+    override var isHighlighted: Bool {
+        didSet {
+            executeAnimated {
+                self.backgroundColor = self.isHighlighted ? self.attributes.highlightedBackgroundColor : self.attributes.backgroundColor
+            }
+        }
+    }
     
     //MARK: - Initialization
     
@@ -69,14 +82,7 @@ class SegmentedControlItem: UIView {
         titleButton.bindEdgesToSuperview(padding: attributes.margins, orientation: .horizontal)
         titleButton.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
         titleButton.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
-    }
-    
-    func setSelected(_ selected: Bool, animated: Bool) {
-        titleButton.isSelected = selected
-    }
-    
-    func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        titleButton.isHighlighted = highlighted
+        titleButton.isUserInteractionEnabled = false
     }
     
     override var intrinsicContentSize: CGSize {
@@ -90,5 +96,15 @@ class SegmentedControlItem: UIView {
         case .fixed(let fixedHeight): height = fixedHeight
         }
         return CGSize(width: width, height: height)
+    }
+    
+    //MARK: - Private
+    
+    private func executeAnimated(animations: @escaping () -> Void) {
+        UIView.animate(withDuration: 0.2,
+                       delay: 0.0,
+                       options: [.beginFromCurrentState, .allowUserInteraction],
+                       animations: animations,
+                       completion: nil)
     }
 }
