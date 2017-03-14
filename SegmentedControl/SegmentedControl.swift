@@ -21,22 +21,29 @@ struct SegmentedControlAttributes {
     var interitemSpacing: CGFloat = 0.0
     var itemWidth: SegmentedControlItemWidth = .fitToContent
     var selectionIndicatorColor: UIColor = .red
+    var selectionIndicatorHeight: CGFloat = 2
 }
 
 class SegmentedControl: UIScrollView {
     
     //MARK: - Private properties
     
-    weak var selectedSegment: SegmentedControlItem?
+    private var selectedSegment: SegmentedControlItem? {
+        guard let index = selectedSegmentIndex else { return nil }
+        guard (0..<segments.count).contains(index) else { return nil }
+        return segments[index]
+    }
     
     //MARK: - Public properties
     
     private(set) var contentView = UIView()
     private(set) var segments = [SegmentedControlItem]()
-    
+    private(set) var selectionIndicator = UIView()
+    private(set) var selectedSegmentIndex: Int? {
+        didSet { updateSelectionIndicatorPosition() }
+    }
     var attributes = SegmentedControlAttributes()
     var itemAttributes = SegmentedControlItemAttributes()
-    
     weak var segmentedControlDelegate: SegmentedControlDelegate?
     weak var segmentedControlDatasource: SegmentedControlDataSource?
     
@@ -52,7 +59,18 @@ class SegmentedControl: UIScrollView {
         setupUI()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateSelectionIndicatorPosition()
+    }
+    
     private func setupUI() {
+        setupScrollView()
+        setupSelectionIndicator()
+        reloadData()
+    }
+    
+    private func setupScrollView() {
         clipsToBounds = true
         delaysContentTouches = false
         showsVerticalScrollIndicator = false
@@ -61,7 +79,24 @@ class SegmentedControl: UIScrollView {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)
         contentView.bindEdgesToSuperview()
-        reloadData()
+    }
+    
+    private func setupSelectionIndicator() {
+        selectionIndicator.backgroundColor = attributes.selectionIndicatorColor
+        contentView.addSubview(selectionIndicator)
+    }
+    
+    private func updateSelectionIndicatorPosition(animated: Bool = true) {
+        guard let segment = selectedSegment else { return }
+        var frame = segment.frame
+        frame.size.height = attributes.selectionIndicatorHeight
+        frame.origin.y = segment.frame.height - frame.height
+        if selectionIndicator.frame.isEmpty {
+            selectionIndicator.frame = frame
+        } else {
+            executeAnimated { self.selectionIndicator.frame = frame }
+        }
+        
     }
     
     //MARK: - Public
@@ -90,8 +125,19 @@ class SegmentedControl: UIScrollView {
         let index = segments.index(of: sender)
         selectedSegment?.isSelected = false
         sender.isSelected = true
-        selectedSegment = sender
+        selectedSegmentIndex = index
         segmentedControlDelegate?.segmentedControl?(self, didSelectItemAt: index!)
+    }
+    
+    //MARK: - Private
+    
+    private func executeAnimated(animations: @escaping () -> Void) {
+        UIView.animate(withDuration: 0.2, delay: 0.0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.1,
+                       options: [.beginFromCurrentState, .allowUserInteraction],
+                       animations: animations, completion: nil)
+
     }
 }
 
