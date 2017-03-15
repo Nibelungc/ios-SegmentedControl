@@ -55,10 +55,7 @@ class SegmentedControl: UIView {
     }
     private var _selectedSegmentIndex: Int? {
         willSet { selectedSegment?.isSelected = false }
-        didSet {
-            selectedSegment?.isSelected = true
-            updateSelectionIndicatorPosition()
-        }
+        didSet { updateSelection() }
     }
     
     //MARK: - Public properties
@@ -87,6 +84,7 @@ class SegmentedControl: UIView {
             guard oldValue.size.width != bounds.size.width else { return }
             configureSegmentsLayout()
             updateSelectionIndicatorPosition()
+            updateFocusOnSelectedSegment()
         }
     }
     
@@ -180,6 +178,20 @@ class SegmentedControl: UIView {
             segment.attributes.size.width = .fitToContent
         }
         layoutIfNeeded()
+    }
+    
+    private func updateSelection() {
+        selectedSegment?.isSelected = true
+        updateSelectionIndicatorPosition()
+        updateFocusOnSelectedSegment()
+    }
+    
+    private func updateFocusOnSelectedSegment() {
+        guard let segment = selectedSegment else { return }
+        var offsetX = segment.center.x - bounds.midX
+        let maxXOffset = scrollView.contentSize.width - bounds.width
+        offsetX = offsetX <= 0 ? 0 : min(maxXOffset, offsetX)
+        scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
     }
     
     private func updateSelectionIndicatorPosition(animated: Bool = true) {
