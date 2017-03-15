@@ -10,8 +10,8 @@ import UIKit
 
 class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedControlDataSource {
     
-    var titles = ["Позиции", "Балансы", "Заявки", "Сделки"]
-//    var titles = ["Мой список", "Акции США", "Акции РФ", "Облигации", "Фьючерсы", "Индексы"]
+//    var titles = ["Позиции", "Балансы", "Заявки", "Сделки"]
+    var titles = ["Мой список", "Акции США", "Акции РФ", "Облигации", "Фьючерсы"]
     @IBOutlet weak var segmentedControl: SegmentedControl!
     
     override func viewDidLoad() {

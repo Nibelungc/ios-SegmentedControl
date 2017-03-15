@@ -35,9 +35,11 @@ class SegmentedControl: UIScrollView {
         guard (0..<segments.count).contains(index) else { return nil }
         return segments[index]
     }
-    private var widthConstraints = [NSLayoutConstraint]()
     
     //MARK: - Public properties
+    
+    weak var segmentedControlDelegate: SegmentedControlDelegate?
+    weak var segmentedControlDatasource: SegmentedControlDataSource?
     
     private(set) var contentView = SegmentedControlContentView()
     private(set) var segments = [SegmentedControlItem]()
@@ -47,12 +49,10 @@ class SegmentedControl: UIScrollView {
     }
     var attributes = SegmentedControlAttributes()
     var itemAttributes = SegmentedControlItemAttributes()
-    weak var segmentedControlDelegate: SegmentedControlDelegate?
-    weak var segmentedControlDatasource: SegmentedControlDataSource?
     override var bounds: CGRect {
         didSet {
             guard oldValue.size.width != bounds.size.width else { return }
-            updateItemConstraints()
+            configureSegmentsLayout()
             updateSelectionIndicatorPosition()
         }
     }
@@ -69,16 +69,13 @@ class SegmentedControl: UIScrollView {
         setupUI()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        updateSelectionIndicatorPosition(animated: false)
-    }
-    
     private func setupUI() {
         setupScrollView()
         setupSelectionIndicator()
         reloadData()
     }
+    
+    //MARK: - Inital setup
     
     private func setupScrollView() {
         clipsToBounds = true
@@ -91,11 +88,64 @@ class SegmentedControl: UIScrollView {
         contentView.bindEdgesToSuperview()
     }
     
-    //MARK: - Selection Indicator
-    
     private func setupSelectionIndicator() {
         selectionIndicator.backgroundColor = attributes.selectionIndicatorColor
         contentView.addSubview(selectionIndicator)
+    }
+    
+    //MARK: - Public
+    
+    func reloadData() {
+        removeSegments()
+        createSegments()
+    }
+    
+    //MARK: - Create segments
+    
+    private func removeSegments() {
+        guard !segments.isEmpty else { return }
+        segments.forEach { $0.removeFromSuperview() }
+    }
+    
+    private func createSegments() {
+        guard let datasource = segmentedControlDatasource else { return }
+        for index in 0..<datasource.numberOfItems(in: self) {
+            let title = datasource.segmentedControl(self, titleAt: index)
+            var itemAttributes = SegmentedControlItemAttributes()
+            itemAttributes.size = SegmentedControlItemSize(width: attributes.itemWidth,
+                                                           height: .fixed(bounds.size.height))
+            let item = SegmentedControlItem(title: title, attributes: itemAttributes)
+            item.translatesAutoresizingMaskIntoConstraints = false
+            item.addTarget(self, action: #selector(segmentButtonTapped(sender:)), for: .touchUpInside)
+            contentView.addSubview(item)
+            segments.append(item)
+        }
+        UIView.bindViewsSuccessively(views: segments, inSuperview: contentView, padding: attributes.interitemSpacing)
+        configureSegmentsLayout()
+    }
+    
+    func configureSegmentsLayout() {
+        resetContentSizeToFit()
+        let needToFillContentView = contentView.bounds.size.width < bounds.size.width
+        let priority = needToFillContentView ? UILayoutPriorityDefaultLow : UILayoutPriorityDefaultHigh
+        let itemRelativeWidth: CGFloat = {
+            let itemBestWidth = bounds.size.width / CGFloat(segments.count)
+            let itemMaxWidth = segments.map { $0.bounds.size.width }.max() ?? 0
+            return max(itemBestWidth, itemMaxWidth)
+        }()
+        segments.forEach { segment in
+            segment.setContentHuggingPriority(priority, for: .horizontal)
+            segment.attributes.size.width = .fixed(itemRelativeWidth)
+        }
+        layoutIfNeeded()
+    }
+    
+    func resetContentSizeToFit() {
+        segments.forEach { segment in
+            segment.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
+            segment.attributes.size.width = .fitToContent
+        }
+        layoutIfNeeded()
     }
     
     private func updateSelectionIndicatorPosition(animated: Bool = true) {
@@ -108,51 +158,6 @@ class SegmentedControl: UIScrollView {
         } else {
             executeAnimated { self.selectionIndicator.frame = frame }
         }
-    }
-    
-    //MARK: - Public
-    
-    func reloadData() {
-        guard let datasource = segmentedControlDatasource else { return }
-        //TODO: Clear before next reload data
-        
-        for index in 0..<datasource.numberOfItems(in: self) {
-            let title = datasource.segmentedControl(self, titleAt: index)
-            var itemAttributes = SegmentedControlItemAttributes()
-            itemAttributes.size = SegmentedControlItemSize(width: attributes.itemWidth,
-                                                           height: .fixed(bounds.size.height))
-            let item = SegmentedControlItem(title: title, attributes: itemAttributes)
-            item.translatesAutoresizingMaskIntoConstraints = false
-            item.addTarget(self, action: #selector(segmentButtonTapped(sender:)), for: .touchUpInside)
-            contentView.addSubview(item)
-            segments.append(item)
-        }
-        
-        UIView.bindViewsSuccessively(views: segments, inSuperview: contentView, padding: attributes.interitemSpacing)
-        updateItemConstraints()
-        
-    }
-    
-    var widthRelation: CGFloat {
-        let itemBestWidth = bounds.size.width / CGFloat(segments.count)
-        let itemMaxWidth = segments.map { $0.bounds.size.width }.max() ?? 0
-        let itemResultWidth = max(itemBestWidth, itemMaxWidth)
-        return itemResultWidth/bounds.size.width
-    }
-    
-    func updateItemConstraints() {
-        let needToFillContentView = contentView.bounds.size.width < bounds.size.width
-        print("content: \(contentView.bounds.size) bounds: \(bounds.size)")
-        let priority = needToFillContentView ? UILayoutPriorityDefaultLow : UILayoutPriorityDefaultHigh
-        widthConstraints.forEach { $0.isActive = false }
-        widthConstraints.removeAll()
-        segments.forEach { segment in
-            segment.setContentHuggingPriority(priority, for: .horizontal)
-            if needToFillContentView {
-                widthConstraints.append(segment.bindWidthToView(self, relation: widthRelation))
-            }
-        }
-        layoutIfNeeded()
     }
     
     override func touchesShouldCancel(in view: UIView) -> Bool {
