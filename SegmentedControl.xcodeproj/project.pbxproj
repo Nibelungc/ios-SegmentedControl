@@ -15,6 +15,7 @@
 		CFA5B7C81E78309800D9AB13 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA5B7C51E78309800D9AB13 /* SegmentedControl.swift */; };
 		CFA5B7C91E78309800D9AB13 /* SegmentedControlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA5B7C61E78309800D9AB13 /* SegmentedControlItem.swift */; };
 		CFA5B7CA1E78309800D9AB13 /* UIView+LayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA5B7C71E78309800D9AB13 /* UIView+LayoutHelper.swift */; };
+		CFEA88421E797EF700627AD0 /* SegmentedViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA88411E797EF700627AD0 /* SegmentedViewControllerContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		CFA5B7C51E78309800D9AB13 /* SegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		CFA5B7C61E78309800D9AB13 /* SegmentedControlItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlItem.swift; sourceTree = "<group>"; };
 		CFA5B7C71E78309800D9AB13 /* UIView+LayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LayoutHelper.swift"; sourceTree = "<group>"; };
+		CFEA88411E797EF700627AD0 /* SegmentedViewControllerContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedViewControllerContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 			children = (
 				CFA5B7C51E78309800D9AB13 /* SegmentedControl.swift */,
 				CFA5B7C61E78309800D9AB13 /* SegmentedControlItem.swift */,
+				CFEA88411E797EF700627AD0 /* SegmentedViewControllerContainer.swift */,
 				CFA5B7C71E78309800D9AB13 /* UIView+LayoutHelper.swift */,
 			);
 			name = Source;
@@ -163,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFA5B7B41E78307600D9AB13 /* ViewController.swift in Sources */,
+				CFEA88421E797EF700627AD0 /* SegmentedViewControllerContainer.swift in Sources */,
 				CFA5B7C91E78309800D9AB13 /* SegmentedControlItem.swift in Sources */,
 				CFA5B7C81E78309800D9AB13 /* SegmentedControl.swift in Sources */,
 				CFA5B7B21E78307600D9AB13 /* AppDelegate.swift in Sources */,
@@ -328,6 +332,7 @@
 				CFA5B7C21E78307600D9AB13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
