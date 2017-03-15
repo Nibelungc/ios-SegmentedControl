@@ -31,9 +31,16 @@ class SegmentedControl: UIScrollView {
     //MARK: - Private properties
     
     private var selectedSegment: SegmentedControlItem? {
-        guard let index = selectedSegmentIndex else { return nil }
+        guard let index = _selectedSegmentIndex else { return nil }
         guard (0..<segments.count).contains(index) else { return nil }
         return segments[index]
+    }
+    private var _selectedSegmentIndex: Int? {
+        willSet { selectedSegment?.isSelected = false }
+        didSet {
+            selectedSegment?.isSelected = true
+            updateSelectionIndicatorPosition()
+        }
     }
     
     //MARK: - Public properties
@@ -44,8 +51,15 @@ class SegmentedControl: UIScrollView {
     private(set) var contentView = SegmentedControlContentView()
     private(set) var segments = [SegmentedControlItem]()
     private(set) var selectionIndicator = UIView()
-    private(set) var selectedSegmentIndex: Int? {
-        didSet { updateSelectionIndicatorPosition() }
+    var selectedSegmentIndex: Int? {
+        set {
+            if newValue == nil {
+                _selectedSegmentIndex = newValue
+            } else if 0 <= newValue! && newValue! < segments.count {
+                _selectedSegmentIndex = newValue
+            }
+        }
+        get { return _selectedSegmentIndex }
     }
     var attributes = SegmentedControlAttributes()
     var itemAttributes = SegmentedControlItemAttributes()
@@ -173,8 +187,6 @@ class SegmentedControl: UIScrollView {
     
     func segmentButtonTapped(sender: SegmentedControlItem) {
         let index = segments.index(of: sender)
-        selectedSegment?.isSelected = false
-        sender.isSelected = true
         selectedSegmentIndex = index
         segmentedControlDelegate?.segmentedControl?(self, didSelectItemAt: index!)
     }

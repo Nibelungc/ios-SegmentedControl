@@ -53,6 +53,7 @@ class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedCont
     @IBAction func refreshAction(_ sender: Any) {
         data = data == .quotes ? .briefcase : .quotes
         segmentedControl.reloadData()
+        segmentedControl.selectedSegmentIndex = 0
     }
 }
 
