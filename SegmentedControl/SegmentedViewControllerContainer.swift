@@ -74,6 +74,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
                                         with frame: CGRect) {
         parent.addChildViewController(childController)
         childController.view.frame = frame
+        childController.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         parent.view.addSubview(childController.view)
         childController.didMove(toParentViewController: parent)
     }

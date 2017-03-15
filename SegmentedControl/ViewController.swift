@@ -87,7 +87,8 @@ class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedCont
         let controller = UIViewController()
         controller.view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         let label = UILabel()
-        label.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleWidth, .flexibleHeight]
+        label.textAlignment = .center
+        label.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleWidth]
         label.text = title
         label.sizeToFit()
         label.center = controller.view.center
