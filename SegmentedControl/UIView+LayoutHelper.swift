@@ -34,6 +34,13 @@ extension UIView {
         )
     }
     
+    @discardableResult
+    func bindWidthToView(_ view: UIView, relation: CGFloat = 1.0) -> NSLayoutConstraint {
+        let constraint = NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: relation, constant: 0.0)
+        view.addConstraint(constraint)
+        return constraint
+    }
+    
     static func bindViewsSuccessively(views: [UIView], inSuperview superview: UIView, padding: CGFloat = 12.0, orientation: Orientation = .horizontal) {
         let metrics = ["padding": padding]
         for (index, view) in views.enumerated() {

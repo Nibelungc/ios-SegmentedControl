@@ -39,7 +39,10 @@ class SegmentedControlItem: UIControl {
     
     private(set) var title: String
     private(set) var titleButton = UIButton()
-    private var attributes: SegmentedControlItemAttributes
+    
+    var attributes: SegmentedControlItemAttributes {
+        didSet { invalidateIntrinsicContentSize() }
+    }
     override var isSelected: Bool {
         didSet {
             titleButton.isSelected = isSelected

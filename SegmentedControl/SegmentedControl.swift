@@ -24,6 +24,8 @@ struct SegmentedControlAttributes {
     var selectionIndicatorHeight: CGFloat = 2
 }
 
+class SegmentedControlContentView: UIView { }
+
 class SegmentedControl: UIScrollView {
     
     //MARK: - Private properties
@@ -33,10 +35,11 @@ class SegmentedControl: UIScrollView {
         guard (0..<segments.count).contains(index) else { return nil }
         return segments[index]
     }
+    private var widthConstraints = [NSLayoutConstraint]()
     
     //MARK: - Public properties
     
-    private(set) var contentView = UIView()
+    private(set) var contentView = SegmentedControlContentView()
     private(set) var segments = [SegmentedControlItem]()
     private(set) var selectionIndicator = UIView()
     private(set) var selectedSegmentIndex: Int? {
@@ -46,6 +49,13 @@ class SegmentedControl: UIScrollView {
     var itemAttributes = SegmentedControlItemAttributes()
     weak var segmentedControlDelegate: SegmentedControlDelegate?
     weak var segmentedControlDatasource: SegmentedControlDataSource?
+    override var bounds: CGRect {
+        didSet {
+            guard oldValue.size.width != bounds.size.width else { return }
+            updateItemConstraints()
+            updateSelectionIndicatorPosition()
+        }
+    }
     
     //MARK: - Initialization
     
@@ -61,7 +71,7 @@ class SegmentedControl: UIScrollView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        updateSelectionIndicatorPosition()
+        updateSelectionIndicatorPosition(animated: false)
     }
     
     private func setupUI() {
@@ -81,6 +91,8 @@ class SegmentedControl: UIScrollView {
         contentView.bindEdgesToSuperview()
     }
     
+    //MARK: - Selection Indicator
+    
     private func setupSelectionIndicator() {
         selectionIndicator.backgroundColor = attributes.selectionIndicatorColor
         contentView.addSubview(selectionIndicator)
@@ -96,7 +108,6 @@ class SegmentedControl: UIScrollView {
         } else {
             executeAnimated { self.selectionIndicator.frame = frame }
         }
-        
     }
     
     //MARK: - Public
@@ -116,7 +127,36 @@ class SegmentedControl: UIScrollView {
             contentView.addSubview(item)
             segments.append(item)
         }
+        
         UIView.bindViewsSuccessively(views: segments, inSuperview: contentView, padding: attributes.interitemSpacing)
+        updateItemConstraints()
+        
+    }
+    
+    var widthRelation: CGFloat {
+        let itemBestWidth = bounds.size.width / CGFloat(segments.count)
+        let itemMaxWidth = segments.map { $0.bounds.size.width }.max() ?? 0
+        let itemResultWidth = max(itemBestWidth, itemMaxWidth)
+        return itemResultWidth/bounds.size.width
+    }
+    
+    func updateItemConstraints() {
+        let needToFillContentView = contentView.bounds.size.width < bounds.size.width
+        print("content: \(contentView.bounds.size) bounds: \(bounds.size)")
+        let priority = needToFillContentView ? UILayoutPriorityDefaultLow : UILayoutPriorityDefaultHigh
+        widthConstraints.forEach { $0.isActive = false }
+        widthConstraints.removeAll()
+        segments.forEach { segment in
+            segment.setContentHuggingPriority(priority, for: .horizontal)
+            if needToFillContentView {
+                widthConstraints.append(segment.bindWidthToView(self, relation: widthRelation))
+            }
+        }
+        layoutIfNeeded()
+    }
+    
+    override func touchesShouldCancel(in view: UIView) -> Bool {
+        return true
     }
     
     //MARK: - Actions
@@ -132,7 +172,7 @@ class SegmentedControl: UIScrollView {
     //MARK: - Private
     
     private func executeAnimated(animations: @escaping () -> Void) {
-        UIView.animate(withDuration: 0.2, delay: 0.0,
+        UIView.animate(withDuration: 0.3, delay: 0.0,
                        usingSpringWithDamping: 0.7,
                        initialSpringVelocity: 0.1,
                        options: [.beginFromCurrentState, .allowUserInteraction],

@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedControlDataSource {
     
     var titles = ["Позиции", "Балансы", "Заявки", "Сделки"]
+//    var titles = ["Мой список", "Акции США", "Акции РФ", "Облигации", "Фьючерсы", "Индексы"]
     @IBOutlet weak var segmentedControl: SegmentedControl!
     
     override func viewDidLoad() {
@@ -35,7 +36,7 @@ class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedCont
     //MARK: - SegmentedControlDelegate
     
     func segmentedControl(_ segmentedControl: SegmentedControl, didSelectItemAt index: Int) {
-        print("\(titles[index]) - is selected")
+        
     }
 }
 
