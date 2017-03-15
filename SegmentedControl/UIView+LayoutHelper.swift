@@ -22,6 +22,12 @@ extension UIView {
         }
     }
     
+    func bindAttributeToSuperview(attribute: NSLayoutAttribute) {
+        superview!.addConstraint(
+            NSLayoutConstraint(item: self, attribute: attribute, relatedBy: .equal, toItem: superview!, attribute: attribute, multiplier: 1.0, constant: 0.0)
+        )
+    }
+    
     func bindEdgesToSuperview(padding: CGFloat = 0.0) {
         bindEdgesToSuperview(padding: padding, orientation: .vertical)
         bindEdgesToSuperview(padding: padding, orientation: .horizontal)

@@ -26,7 +26,25 @@ struct SegmentedControlAttributes {
 
 class SegmentedControlContentView: UIView { }
 
-class SegmentedControl: UIScrollView {
+class SegmentedControlScrollView: UIScrollView {
+    
+    init() {
+        super.init(frame: .zero)
+        delaysContentTouches = false
+        showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func touchesShouldCancel(in view: UIView) -> Bool {
+        return true
+    }
+}
+
+class SegmentedControl: UIView {
     
     //MARK: - Private properties
     
@@ -45,9 +63,10 @@ class SegmentedControl: UIScrollView {
     
     //MARK: - Public properties
     
-    weak var segmentedControlDelegate: SegmentedControlDelegate?
-    weak var segmentedControlDatasource: SegmentedControlDataSource?
+    weak var delegate: SegmentedControlDelegate?
+    weak var dataSource: SegmentedControlDataSource?
     
+    private(set) var scrollView = SegmentedControlScrollView()
     private(set) var contentView = SegmentedControlContentView()
     private(set) var segments = [SegmentedControlItem]()
     private(set) var selectionIndicator = UIView()
@@ -71,7 +90,7 @@ class SegmentedControl: UIScrollView {
         }
     }
     
-    //MARK: - Initialization
+    //MARK: - Lifecycle
     
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
@@ -92,13 +111,12 @@ class SegmentedControl: UIScrollView {
     //MARK: - Inital setup
     
     private func setupScrollView() {
-        clipsToBounds = true
-        delaysContentTouches = false
-        showsVerticalScrollIndicator = false
-        showsHorizontalScrollIndicator = false
         translatesAutoresizingMaskIntoConstraints = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(contentView)
+        addSubview(scrollView)
+        scrollView.bindEdgesToSuperview()
+        scrollView.addSubview(contentView)
         contentView.bindEdgesToSuperview()
     }
     
@@ -124,7 +142,7 @@ class SegmentedControl: UIScrollView {
     }
     
     private func createSegments() {
-        guard let datasource = segmentedControlDatasource else { return }
+        guard let datasource = dataSource else { return }
         for index in 0..<datasource.numberOfItems(in: self) {
             let title = datasource.segmentedControl(self, titleAt: index)
             var itemAttributes = SegmentedControlItemAttributes()
@@ -140,7 +158,7 @@ class SegmentedControl: UIScrollView {
         configureSegmentsLayout()
     }
     
-    func configureSegmentsLayout() {
+    private func configureSegmentsLayout() {
         resetContentSizeToFit()
         let needToFillContentView = contentView.bounds.size.width < bounds.size.width
         let priority = needToFillContentView ? UILayoutPriorityDefaultLow : UILayoutPriorityDefaultHigh
@@ -156,7 +174,7 @@ class SegmentedControl: UIScrollView {
         layoutIfNeeded()
     }
     
-    func resetContentSizeToFit() {
+    private func resetContentSizeToFit() {
         segments.forEach { segment in
             segment.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
             segment.attributes.size.width = .fitToContent
@@ -179,16 +197,12 @@ class SegmentedControl: UIScrollView {
         }
     }
     
-    override func touchesShouldCancel(in view: UIView) -> Bool {
-        return true
-    }
-    
     //MARK: - Actions
     
     func segmentButtonTapped(sender: SegmentedControlItem) {
         let index = segments.index(of: sender)
         selectedSegmentIndex = index
-        segmentedControlDelegate?.segmentedControl?(self, didSelectItemAt: index!)
+        delegate?.segmentedControl?(self, didSelectItemAt: index!)
     }
     
     //MARK: - Private

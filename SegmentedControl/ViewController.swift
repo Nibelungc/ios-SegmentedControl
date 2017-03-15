@@ -28,8 +28,8 @@ class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedCont
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = false
-        segmentedControl.segmentedControlDatasource = self
-        segmentedControl.segmentedControlDelegate = self
+        segmentedControl.dataSource = self
+        segmentedControl.delegate = self
         segmentedControl.backgroundColor = .groupTableViewBackground
         segmentedControl.reloadData()
     }
@@ -44,7 +44,7 @@ class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedCont
         return data.items[index]
     }
     
-    //MARK: - SegmentedControlDelegate
+    //MARK: - delegate
     
     func segmentedControl(_ segmentedControl: SegmentedControl, didSelectItemAt index: Int) {
         
