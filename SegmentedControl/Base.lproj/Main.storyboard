@@ -36,7 +36,13 @@
                             <constraint firstItem="0gg-p4-Nbf" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="YCe-vV-hbW"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Segmented Control" id="7kI-3c-KtE"/>
+                    <navigationItem key="navigationItem" title="Segmented Control" id="7kI-3c-KtE">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="adZ-mS-7Bp">
+                            <connections>
+                                <action selector="refreshAction:" destination="BYZ-38-t0r" id="rrJ-fE-Roe"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="segmentedControl" destination="0gg-p4-Nbf" id="Frw-1H-XPb"/>
                     </connections>

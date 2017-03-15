@@ -97,6 +97,7 @@ class SegmentedControl: UIScrollView {
     
     func reloadData() {
         removeSegments()
+        selectedSegmentIndex = nil
         createSegments()
     }
     
@@ -105,6 +106,7 @@ class SegmentedControl: UIScrollView {
     private func removeSegments() {
         guard !segments.isEmpty else { return }
         segments.forEach { $0.removeFromSuperview() }
+        segments.removeAll()
     }
     
     private func createSegments() {
@@ -149,7 +151,10 @@ class SegmentedControl: UIScrollView {
     }
     
     private func updateSelectionIndicatorPosition(animated: Bool = true) {
-        guard let segment = selectedSegment else { return }
+        guard let segment = selectedSegment else {
+            selectionIndicator.frame = .zero
+            return
+        }
         var frame = segment.frame
         frame.size.height = attributes.selectionIndicatorHeight
         frame.origin.y = segment.frame.height - frame.height

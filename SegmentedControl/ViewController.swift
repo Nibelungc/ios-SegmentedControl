@@ -10,8 +10,19 @@ import UIKit
 
 class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedControlDataSource {
     
-//    var titles = ["Позиции", "Балансы", "Заявки", "Сделки"]
-    var titles = ["Мой список", "Акции США", "Акции РФ", "Облигации", "Фьючерсы"]
+    var data: Pack = .quotes
+    
+    enum Pack {
+        case quotes
+        case briefcase
+        var items: [String] {
+            switch self {
+            case .quotes: return ["Мой список", "Акции США", "Акции РФ", "Облигации", "Фьючерсы"]
+            case .briefcase: return ["Позиции", "Балансы", "Заявки", "Сделки"]
+            }
+        }
+    }
+    
     @IBOutlet weak var segmentedControl: SegmentedControl!
     
     override func viewDidLoad() {
@@ -26,17 +37,22 @@ class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedCont
     //MARK: - SegmentedControlDataSource
     
     func numberOfItems(in segmentedControl: SegmentedControl) -> Int {
-        return titles.count
+        return data.items.count
     }
     
     func segmentedControl(_ segmentedControl: SegmentedControl, titleAt index: Int) -> String {
-        return titles[index]
+        return data.items[index]
     }
     
     //MARK: - SegmentedControlDelegate
     
     func segmentedControl(_ segmentedControl: SegmentedControl, didSelectItemAt index: Int) {
         
+    }
+    
+    @IBAction func refreshAction(_ sender: Any) {
+        data = data == .quotes ? .briefcase : .quotes
+        segmentedControl.reloadData()
     }
 }
 
