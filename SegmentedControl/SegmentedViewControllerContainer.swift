@@ -31,9 +31,8 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     
     //MARK: - Lifecycle
     
-    init(parentViewController: UIViewController, frame: CGRect) {
+    init() {
         super.init(nibName: nil, bundle: nil)
-        addChildViewController(self, toParent: parentViewController, with: frame)
         setupUI()
     }
     
@@ -54,6 +53,10 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     }
     
     //MARK: - Public
+    
+    func embedIn(parentViewController: UIViewController, frame: CGRect) {
+        addChildViewController(self, toParent: parentViewController, with: frame)
+    }
 
     func reloadData() {
         resetUI()

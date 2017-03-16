@@ -32,7 +32,8 @@ class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedCont
         var frame = view.bounds
         frame.origin.y = segmentedControl.frame.maxY
         frame.size.height -= segmentedControl.frame.maxY - view.frame.minY
-        segmentedViewController = SegmentedViewControllerContainer(parentViewController: self, frame: frame)
+        segmentedViewController = SegmentedViewControllerContainer()
+        segmentedViewController.embedIn(parentViewController: self, frame: frame)
         segmentedViewController.dataSource = self
         segmentedViewController.view.backgroundColor = UIColor.blue.withAlphaComponent(0.2)
         
