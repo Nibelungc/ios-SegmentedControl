@@ -157,6 +157,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
                                                            options: .directionLeadingToTrailing,
                                                            metrics: ["height": segmentedControlHeight],
                                                            views: ["segmentedControl": segmentedControl]))
+        view.addConstraint(NSLayoutConstraint(item: segmentedControl, attribute: .bottom, relatedBy: .equal, toItem: pageController.view, attribute: .top, multiplier: 1.0, constant: 0.0))
         view.layoutIfNeeded()
     }
     
@@ -170,9 +171,13 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         pageController = UIPageViewController(transitionStyle: .scroll,
                                               navigationOrientation: .horizontal)
         guard let initialVC = dataSource?.initialController(in: self) else { return }
-        pageController.view.frame = view.frame
         pageController.setViewControllers([initialVC], direction: .forward, animated: false)
         addChildViewController(pageController, toParent: self, with: frame)
+        pageController.view.translatesAutoresizingMaskIntoConstraints = false
+        pageController.view.bindEdgesToSuperview(orientation: .horizontal)
+        view.addConstraints(
+            NSLayoutConstraint.constraints(withVisualFormat: "V:|-0@750-[pageView]-0-|", options: .directionLeadingToTrailing, metrics: nil, views: ["pageView": pageController.view])
+        )
         pageController.dataSource = self
         pageController.delegate = self
     }
