@@ -217,6 +217,7 @@ class SegmentedControl: UIView {
     
     func segmentButtonTapped(sender: SegmentedControlItem) {
         let index = segments.index(of: sender)
+        guard index != selectedSegmentIndex else { return }
         selectedSegmentIndex = index
         delegate?.segmentedControl?(self, didSelectItemAt: index!)
     }

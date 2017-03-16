@@ -26,7 +26,9 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     private var pageController: UIPageViewController!
     private var segmentedControl: SegmentedControl!
     private var indicies = [UIViewController: Int]()
-    private var currentControllerIndex: Int = 0
+    private var currentControllerIndex: Int = 0 {
+        didSet { segmentedControl.selectedSegmentIndex = currentControllerIndex }
+    }
     private let segmentedControlHeight: CGFloat
     
     //MARK: - Public properties
@@ -86,6 +88,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
         guard let controller = pageViewController.viewControllers?.last else { return }
+        guard completed else { return }
         if let index = indicies[controller] {
             currentControllerIndex = index
         }
@@ -107,10 +110,20 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     //MARK: - SegmentedControlDelegate
     
     func segmentedControl(_ segmentedControl: SegmentedControl, didSelectItemAt index: Int) {
-        
+        guard let controller = controller(at: index) else { return }
+        let direction: UIPageViewControllerNavigationDirection = index > currentControllerIndex ? .forward : .reverse
+        pageController.setViewControllers([controller], direction: direction, animated: true, completion: nil)
+        currentControllerIndex = index
     }
     
     //MARK: - Private
+    
+    private func controller(at index: Int) -> UIViewController? {
+        guard let dataSource = dataSource else { return nil }
+        guard let controller = dataSource.controller(in: self, atIndex: index) else { return nil }
+        indicies[controller] = index
+        return controller
+    }
     
     private func setupSegmentedControl(frame: CGRect) {
         segmentedControl = SegmentedControl(frame: frame)
@@ -151,8 +164,6 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         guard let dataSource = dataSource else { return nil }
         let newIndex = calculation(currentControllerIndex, 1)
         guard (0..<dataSource.numberOfControllers(in: self)).contains(newIndex) else { return nil }
-        let controller = dataSource.controller(in: self, atIndex: newIndex)
-        if controller != nil { indicies[controller!] = newIndex }
-        return controller
+        return controller(at: newIndex)
     }
 }
