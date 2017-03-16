@@ -171,7 +171,8 @@ class SegmentedControl: UIView {
         }()
         segments.forEach { segment in
             segment.setContentHuggingPriority(priority, for: .horizontal)
-            segment.attributes.size.width = .fixed(itemRelativeWidth)
+            segment.attributes.size = SegmentedControlItemSize(width: .fixed(itemRelativeWidth),
+                                                               height: .fixed(bounds.size.height))
         }
         layoutIfNeeded()
     }

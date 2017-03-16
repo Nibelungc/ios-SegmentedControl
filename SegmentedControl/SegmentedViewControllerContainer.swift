@@ -30,6 +30,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         didSet { segmentedControl.selectedSegmentIndex = currentControllerIndex }
     }
     private let segmentedControlHeight: CGFloat
+    private var originaNavigationTitleView: UIView?
     
     //MARK: - Public properties
     
@@ -64,6 +65,24 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         pageController.removeFromParentViewController()
         pageController = nil
         segmentedControl = nil
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard segmentedControl != nil else { return }
+        guard let navigationItem = parent?.navigationItem else { return }
+        
+        if traitCollection.verticalSizeClass != .compact {
+            navigationItem.titleView = originaNavigationTitleView
+            addSegmentedControlAsSubview(frame: .zero)
+        } else {
+            originaNavigationTitleView = navigationItem.titleView
+            navigationItem.titleView = segmentedControl
+            segmentedControl.translatesAutoresizingMaskIntoConstraints = true
+            segmentedControl.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            segmentedControl.frame = segmentedControl.superview!.bounds
+            print("\(segmentedControl.frame)")
+        }
     }
     
     //MARK: - Public
@@ -132,8 +151,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         return controller
     }
     
-    private func setupSegmentedControl(frame: CGRect) {
-        segmentedControl = SegmentedControl(frame: frame)
+    private func addSegmentedControlAsSubview(frame: CGRect) {
         view.addSubview(segmentedControl)
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.bindEdgesToSuperview(orientation: .horizontal)
@@ -143,6 +161,11 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
                                            metrics: ["height": segmentedControlHeight],
                                            views: ["segmentedControl": segmentedControl])
         )
+        view.layoutIfNeeded()
+    }
+    
+    private func setupSegmentedControl(frame: CGRect) {
+        segmentedControl = SegmentedControl(frame: frame)
         segmentedControl.dataSource = self
         segmentedControl.delegate = self
         segmentedControl.selectedSegmentIndex = currentControllerIndex
