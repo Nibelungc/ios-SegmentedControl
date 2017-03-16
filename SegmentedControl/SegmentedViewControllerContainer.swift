@@ -19,19 +19,26 @@ protocol SegmentedViewControllerContainerDataSource: class {
 
 }
 
-class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
+class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource, SegmentedControlDelegate,  SegmentedControlDataSource {
+    
+    //MARK: - Private properties
     
     private var pageController: UIPageViewController!
+    private var segmentedControl: SegmentedControl!
     private var indicies = [UIViewController: Int]()
+    private var currentControllerIndex: Int = 0
+    private let segmentedControlHeight: CGFloat
+    
+    //MARK: - Public properties
     
     weak var dataSource: SegmentedViewControllerContainerDataSource? {
         didSet { reloadData() }
     }
-    var currentControllerIndex: Int = 0
     
     //MARK: - Lifecycle
     
-    init() {
+    init(segmentedControlHeight: CGFloat = 40) {
+        self.segmentedControlHeight = segmentedControlHeight
         super.init(nibName: nil, bundle: nil)
         setupUI()
     }
@@ -41,15 +48,13 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     }
         
     private func setupUI() {
-        pageController = UIPageViewController(transitionStyle: .scroll,
-                                              navigationOrientation: .horizontal)
-        guard let initialVC = dataSource?.initialController(in: self) else { return }
-        setupPageController(pageController, initialViewController: initialVC)
-        addChildViewController(pageController, toParent: self, with: view.bounds)
+        let rects = view.bounds.divided(atDistance: segmentedControlHeight, from: .minYEdge)
+        setupSegmentedControl(frame: rects.slice)
+        setupPageController(frame: rects.remainder)
     }
     
     private func resetUI() {
-        
+        //TODO: Clean up
     }
     
     //MARK: - Public
@@ -63,42 +68,14 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         setupUI()
     }
     
-    //MARK: - Private
-    
-    private func setupPageController(_ controller: UIPageViewController, initialViewController initial: UIViewController) {
-        controller.dataSource = self
-        controller.delegate = self
-        controller.view.frame = view.frame
-        controller.setViewControllers([initial], direction: .forward, animated: false)
-    }
-    
-    private func addChildViewController(_ childController: UIViewController,
-                                        toParent parent: UIViewController,
-                                        with frame: CGRect) {
-        parent.addChildViewController(childController)
-        childController.view.frame = frame
-        childController.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        parent.view.addSubview(childController.view)
-        childController.didMove(toParentViewController: parent)
-    }
-    
     //MARK: - UIPageViewControllerDataSource
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        return viewControlerCalculatingIndex(calculation: { $0 - $1 })
+        return viewControlerCalculatingIndex(calculation: -)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        return viewControlerCalculatingIndex(calculation: { $0 + $1 })
-    }
-    
-    private func viewControlerCalculatingIndex(calculation: (Int, Int) -> Int) -> UIViewController? {
-        guard let dataSource = dataSource else { return nil }
-        let newIndex = calculation(currentControllerIndex, 1)
-        guard (0..<dataSource.numberOfControllers(in: self)).contains(newIndex) else { return nil }
-        let controller = dataSource.controller(in: self, atIndex: newIndex)
-        if controller != nil { indicies[controller!] = newIndex }
-        return controller
+        return viewControlerCalculatingIndex(calculation: +)
     }
     
     //MARK: - UIPageViewControllerDelegate
@@ -112,5 +89,70 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         if let index = indicies[controller] {
             currentControllerIndex = index
         }
+    }
+    
+    //MARK: - SegmentedControlDataSource
+    
+    func numberOfItems(in segmentedControl: SegmentedControl) -> Int {
+        guard let dataSource = dataSource else { return 0 }
+        return dataSource.numberOfControllers(in: self)
+    }
+    
+    func segmentedControl(_ segmentedControl: SegmentedControl, titleAt index: Int) -> String {
+        guard let dataSource = dataSource else { return String() }
+        let controller = dataSource.controller(in: self, atIndex: index)
+        return controller?.title ?? String(index)
+    }
+    
+    //MARK: - SegmentedControlDelegate
+    
+    func segmentedControl(_ segmentedControl: SegmentedControl, didSelectItemAt index: Int) {
+        
+    }
+    
+    //MARK: - Private
+    
+    private func setupSegmentedControl(frame: CGRect) {
+        segmentedControl = SegmentedControl(frame: frame)
+        view.addSubview(segmentedControl)
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.bindEdgesToSuperview(orientation: .horizontal)
+        view.addConstraints(
+            NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[segmentedControl(==height)]",
+                                           options: .directionLeadingToTrailing,
+                                           metrics: ["height": segmentedControlHeight],
+                                           views: ["segmentedControl": segmentedControl])
+        )
+        segmentedControl.dataSource = self
+        segmentedControl.delegate = self
+    }
+    private func setupPageController(frame: CGRect) {
+        pageController = UIPageViewController(transitionStyle: .scroll,
+                                              navigationOrientation: .horizontal)
+        guard let initialVC = dataSource?.initialController(in: self) else { return }
+        pageController.view.frame = view.frame
+        pageController.setViewControllers([initialVC], direction: .forward, animated: false)
+        addChildViewController(pageController, toParent: self, with: frame)
+        pageController.dataSource = self
+        pageController.delegate = self
+    }
+    
+    private func addChildViewController(_ childController: UIViewController,
+                                        toParent parent: UIViewController,
+                                        with frame: CGRect) {
+        parent.addChildViewController(childController)
+        childController.view.frame = frame
+        childController.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        parent.view.addSubview(childController.view)
+        childController.didMove(toParentViewController: parent)
+    }
+    
+    private func viewControlerCalculatingIndex(calculation: (Int, Int) -> Int) -> UIViewController? {
+        guard let dataSource = dataSource else { return nil }
+        let newIndex = calculation(currentControllerIndex, 1)
+        guard (0..<dataSource.numberOfControllers(in: self)).contains(newIndex) else { return nil }
+        let controller = dataSource.controller(in: self, atIndex: newIndex)
+        if controller != nil { indicies[controller!] = newIndex }
+        return controller
     }
 }

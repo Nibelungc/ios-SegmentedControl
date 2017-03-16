@@ -91,6 +91,7 @@ class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedCont
         label.sizeToFit()
         label.center = controller.view.center
         controller.view.addSubview(label)
+        controller.title = title
         return controller
     }
 }
