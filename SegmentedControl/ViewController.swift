@@ -8,53 +8,29 @@
 
 import UIKit
 
-class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedControlDataSource, SegmentedViewControllerContainerDataSource {
-    
-    var data: Pack = .quotes
-    var segmentedViewController: SegmentedViewControllerContainer!
-    
-    enum Pack {
-        case quotes
-        case briefcase
-        var items: [String] {
-            switch self {
-            case .quotes: return ["Мой список", "Акции США", "Акции РФ", "Облигации", "Фьючерсы"]
-            case .briefcase: return ["Позиции", "Балансы", "Заявки", "Сделки"]
-            }
+enum Pack {
+    case quotes
+    case briefcase
+    var items: [String] {
+        switch self {
+        case .quotes: return ["Мой список", "Акции США", "Акции РФ", "Облигации", "Фьючерсы"]
+        case .briefcase: return ["Позиции", "Балансы", "Заявки", "Сделки"]
         }
     }
+}
+
+class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedControlDataSource {
     
+    var data: Pack = .quotes
     @IBOutlet weak var segmentedControl: SegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var frame = view.bounds
-        frame.origin.y = segmentedControl.frame.maxY
-        frame.size.height -= segmentedControl.frame.maxY - view.frame.minY
-        segmentedViewController = SegmentedViewControllerContainer()
-        segmentedViewController.embedIn(parentViewController: self, frame: frame)
-        segmentedViewController.dataSource = self
-        segmentedViewController.view.backgroundColor = UIColor.blue.withAlphaComponent(0.2)
-        
         automaticallyAdjustsScrollViewInsets = false
         segmentedControl.dataSource = self
         segmentedControl.delegate = self
         segmentedControl.backgroundColor = .groupTableViewBackground
-    }
-    
-    //MARK: - SegmentedViewControllerContainerDataSource
-    
-    func numberOfControllers(in container: SegmentedViewControllerContainer) -> Int {
-        return data.items.count
-    }
-    
-    func initialController(in container: SegmentedViewControllerContainer) -> UIViewController {
-        return viewController(forItemWithTitle: data.items.first!)
-    }
-    
-    func controller(in container: SegmentedViewControllerContainer, atIndex index: Int) -> UIViewController? {
-        return viewController(forItemWithTitle: data.items[index])
     }
     
     //MARK: - SegmentedControlDataSource
@@ -77,22 +53,6 @@ class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedCont
         data = data == .quotes ? .briefcase : .quotes
         segmentedControl.reloadData()
         segmentedControl.selectedSegmentIndex = 0
-    }
-    
-    //MARK: - Private
-    
-    private func viewController(forItemWithTitle title: String) -> UIViewController {
-        let controller = UIViewController()
-        controller.view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-        let label = UILabel()
-        label.textAlignment = .center
-        label.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleWidth]
-        label.text = title
-        label.sizeToFit()
-        label.center = controller.view.center
-        controller.view.addSubview(label)
-        controller.title = title
-        return controller
     }
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF3CCAF81E7A81A40074E244 /* SegmentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3CCAF71E7A81A40074E244 /* SegmentedViewController.swift */; };
 		CFA5B7B21E78307600D9AB13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA5B7B11E78307600D9AB13 /* AppDelegate.swift */; };
 		CFA5B7B41E78307600D9AB13 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA5B7B31E78307600D9AB13 /* ViewController.swift */; };
 		CFA5B7B71E78307600D9AB13 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFA5B7B51E78307600D9AB13 /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CF3CCAF71E7A81A40074E244 /* SegmentedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedViewController.swift; sourceTree = "<group>"; };
 		CFA5B7AE1E78307600D9AB13 /* SegmentedControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SegmentedControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFA5B7B11E78307600D9AB13 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFA5B7B31E78307600D9AB13 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 				CFA5B7C31E78307D00D9AB13 /* App */,
 				CFA5B7C41E78308200D9AB13 /* Source */,
 				CFA5B7B31E78307600D9AB13 /* ViewController.swift */,
+				CF3CCAF71E7A81A40074E244 /* SegmentedViewController.swift */,
 			);
 			path = SegmentedControl;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 				CFA5B7C91E78309800D9AB13 /* SegmentedControlItem.swift in Sources */,
 				CFA5B7C81E78309800D9AB13 /* SegmentedControl.swift in Sources */,
 				CFA5B7B21E78307600D9AB13 /* AppDelegate.swift in Sources */,
+				CF3CCAF81E7A81A40074E244 /* SegmentedViewController.swift in Sources */,
 				CFA5B7CA1E78309800D9AB13 /* UIView+LayoutHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

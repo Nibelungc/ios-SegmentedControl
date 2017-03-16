@@ -28,12 +28,21 @@
                                     <constraint firstAttribute="height" constant="40" id="FhO-Vf-Z6a"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Onf-mz-OCG">
+                                <rect key="frame" x="132" y="318" width="110" height="30"/>
+                                <state key="normal" title="Container demo"/>
+                                <connections>
+                                    <segue destination="Sma-dt-YUu" kind="show" id="3l1-pK-Y4K"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="0gg-p4-Nbf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="135-XN-ZwI"/>
                             <constraint firstAttribute="trailing" secondItem="0gg-p4-Nbf" secondAttribute="trailing" id="OcS-fi-E7I"/>
                             <constraint firstItem="0gg-p4-Nbf" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="YCe-vV-hbW"/>
+                            <constraint firstItem="Onf-mz-OCG" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="uOp-JU-ZqI"/>
+                            <constraint firstItem="Onf-mz-OCG" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="zgW-qk-Z2i"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Segmented Control" id="7kI-3c-KtE">
@@ -50,6 +59,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1056.8" y="123.68815592203899"/>
+        </scene>
+        <!--SegmentedContainer-->
+        <scene sceneID="Cbx-vm-qO3">
+            <objects>
+                <viewController title="SegmentedContainer" id="Sma-dt-YUu" customClass="SegmentedViewController" customModule="SegmentedControl" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6UJ-Hp-Q3t"/>
+                        <viewControllerLayoutGuide type="bottom" id="zvh-h3-TMJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="sNC-a4-0wu">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bnq-Yy-Mn5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1788" y="124"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="IVe-71-chR">
