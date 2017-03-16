@@ -13,15 +13,6 @@ enum SegmentedControlItemWidth {
     case fitToContent
 }
 
-enum SegmentedControlItemHeight {
-    case fixed(CGFloat)
-}
-
-struct SegmentedControlItemSize {
-    var width: SegmentedControlItemWidth = .fitToContent
-    var height: SegmentedControlItemHeight = .fixed(44)
-}
-
 struct SegmentedControlItemAttributes {
     var backgroundColor: UIColor = .clear
     var highlightedBackgroundColor: UIColor = UIColor.black.withAlphaComponent(0.15)
@@ -29,7 +20,7 @@ struct SegmentedControlItemAttributes {
     var selectedTitleColor: UIColor = .black
     var highlightedTitleColor: UIColor = .lightGray
     var titleFont: UIFont = .systemFont(ofSize: 12)
-    var size = SegmentedControlItemSize()
+    var width: SegmentedControlItemWidth = .fitToContent
     var margins: CGFloat = 10
 }
 
@@ -89,15 +80,13 @@ class SegmentedControlItem: UIControl {
     }
     
     override var intrinsicContentSize: CGSize {
+        let titleButtonSize = titleButton.sizeThatFits(bounds.size)
         let width: CGFloat
-        let height: CGFloat
-        switch attributes.size.width {
+        switch attributes.width {
         case .fixed(let fixedWidth): width = fixedWidth
-        case .fitToContent: width = titleButton.sizeThatFits(bounds.size).width + attributes.margins * 2
+        case .fitToContent: width = titleButtonSize.width + attributes.margins * 2
         }
-        switch attributes.size.height {
-        case .fixed(let fixedHeight): height = fixedHeight
-        }
+        let height = titleButtonSize.height + attributes.margins * 2
         return CGSize(width: width, height: height)
     }
     

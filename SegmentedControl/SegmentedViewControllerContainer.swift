@@ -81,7 +81,6 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
             segmentedControl.translatesAutoresizingMaskIntoConstraints = true
             segmentedControl.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             segmentedControl.frame = segmentedControl.superview!.bounds
-            print("\(segmentedControl.frame)")
         }
     }
     
@@ -107,7 +106,6 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     }
     
     //MARK: - UIPageViewControllerDelegate
-    
     
     func pageViewController(_ pageViewController: UIPageViewController,
                             didFinishAnimating finished: Bool,
@@ -155,12 +153,10 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         view.addSubview(segmentedControl)
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.bindEdgesToSuperview(orientation: .horizontal)
-        view.addConstraints(
-            NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[segmentedControl(==height)]",
-                                           options: .directionLeadingToTrailing,
-                                           metrics: ["height": segmentedControlHeight],
-                                           views: ["segmentedControl": segmentedControl])
-        )
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[segmentedControl(==height)]",
+                                                           options: .directionLeadingToTrailing,
+                                                           metrics: ["height": segmentedControlHeight],
+                                                           views: ["segmentedControl": segmentedControl]))
         view.layoutIfNeeded()
     }
     

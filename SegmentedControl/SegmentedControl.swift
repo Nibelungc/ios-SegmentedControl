@@ -85,10 +85,14 @@ class SegmentedControl: UIView {
     var itemAttributes = SegmentedControlItemAttributes()
     override var bounds: CGRect {
         didSet {
-            guard oldValue.size.width != bounds.size.width else { return }
-            configureSegmentsLayout()
-            updateSelectionIndicatorPosition()
-            updateFocusOnSelectedSegment()
+            guard oldValue.size != bounds.size else { return }
+            updateOnSizeChange()
+        }
+    }
+    override var frame: CGRect {
+        didSet {
+            guard oldValue.size != frame.size else { return }
+            updateOnSizeChange()
         }
     }
     
@@ -120,6 +124,7 @@ class SegmentedControl: UIView {
         scrollView.bindEdgesToSuperview()
         scrollView.addSubview(contentView)
         contentView.bindEdgesToSuperview()
+        addConstraint(NSLayoutConstraint(item: contentView, attribute: .height, relatedBy: .lessThanOrEqual, toItem: self, attribute: .height, multiplier: 1.0, constant: 0.0))
     }
     
     private func setupSelectionIndicator() {
@@ -148,8 +153,7 @@ class SegmentedControl: UIView {
         for index in 0..<datasource.numberOfItems(in: self) {
             let title = datasource.segmentedControl(self, titleAt: index)
             var itemAttributes = SegmentedControlItemAttributes()
-            itemAttributes.size = SegmentedControlItemSize(width: attributes.itemWidth,
-                                                           height: .fixed(bounds.size.height))
+            itemAttributes.width = attributes.itemWidth
             let item = SegmentedControlItem(title: title, attributes: itemAttributes)
             item.translatesAutoresizingMaskIntoConstraints = false
             item.addTarget(self, action: #selector(segmentButtonTapped(sender:)), for: .touchUpInside)
@@ -171,8 +175,7 @@ class SegmentedControl: UIView {
         }()
         segments.forEach { segment in
             segment.setContentHuggingPriority(priority, for: .horizontal)
-            segment.attributes.size = SegmentedControlItemSize(width: .fixed(itemRelativeWidth),
-                                                               height: .fixed(bounds.size.height))
+            segment.attributes.width = .fixed(itemRelativeWidth)
         }
         layoutIfNeeded()
     }
@@ -180,9 +183,17 @@ class SegmentedControl: UIView {
     private func resetContentSizeToFit() {
         segments.forEach { segment in
             segment.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
-            segment.attributes.size.width = .fitToContent
+            segment.attributes.width = .fitToContent
         }
         layoutIfNeeded()
+    }
+    
+    //MARK: - Updating uppearance
+    
+    private func updateOnSizeChange() {
+        configureSegmentsLayout()
+        updateSelectionIndicatorPosition()
+        updateFocusOnSelectedSegment()
     }
     
     private func updateSelection() {
