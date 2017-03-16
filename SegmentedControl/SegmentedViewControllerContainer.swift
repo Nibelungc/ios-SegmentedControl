@@ -55,8 +55,15 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         setupPageController(frame: rects.remainder)
     }
     
-    private func resetUI() {
-        //TODO: Clean up
+    private func removeUIAndResetState() {
+        segmentedControl.removeFromSuperview()
+        indicies.removeAll()
+        currentControllerIndex = 0
+        pageController.willMove(toParentViewController: nil)
+        pageController.view.removeFromSuperview()
+        pageController.removeFromParentViewController()
+        pageController = nil
+        segmentedControl = nil
     }
     
     //MARK: - Public
@@ -66,7 +73,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     }
 
     func reloadData() {
-        resetUI()
+        removeUIAndResetState()
         setupUI()
     }
     
@@ -138,6 +145,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         )
         segmentedControl.dataSource = self
         segmentedControl.delegate = self
+        segmentedControl.selectedSegmentIndex = currentControllerIndex
     }
     private func setupPageController(frame: CGRect) {
         pageController = UIPageViewController(transitionStyle: .scroll,
