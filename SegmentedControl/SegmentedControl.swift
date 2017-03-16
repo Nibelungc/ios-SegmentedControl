@@ -60,8 +60,12 @@ class SegmentedControl: UIView {
     
     //MARK: - Public properties
     
-    weak var delegate: SegmentedControlDelegate?
-    weak var dataSource: SegmentedControlDataSource?
+    weak var delegate: SegmentedControlDelegate? {
+        didSet { reloadData() }
+    }
+    weak var dataSource: SegmentedControlDataSource?{
+        didSet { reloadData() }
+    }
     
     private(set) var scrollView = SegmentedControlScrollView()
     private(set) var contentView = SegmentedControlContentView()

@@ -41,9 +41,6 @@ class ViewController: UIViewController, SegmentedControlDelegate,  SegmentedCont
         segmentedControl.dataSource = self
         segmentedControl.delegate = self
         segmentedControl.backgroundColor = .groupTableViewBackground
-        segmentedControl.reloadData()
-        
-        
     }
     
     //MARK: - SegmentedViewControllerContainerDataSource
