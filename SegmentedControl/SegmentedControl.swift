@@ -152,7 +152,6 @@ class SegmentedControl: UIView {
         guard let datasource = dataSource else { return }
         for index in 0..<datasource.numberOfItems(in: self) {
             let title = datasource.segmentedControl(self, titleAt: index)
-            var itemAttributes = SegmentedControlItemAttributes()
             itemAttributes.width = attributes.itemWidth
             let item = SegmentedControlItem(title: title, attributes: itemAttributes)
             item.translatesAutoresizingMaskIntoConstraints = false

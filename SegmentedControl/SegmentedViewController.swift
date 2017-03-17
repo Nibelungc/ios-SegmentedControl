@@ -18,6 +18,7 @@ class SegmentedViewController: UIViewController, SegmentedViewControllerContaine
         navigationController?.navigationBar.isTranslucent = false
         segmentedViewController = SegmentedViewControllerContainer()
         segmentedViewController.embedIn(parentViewController: self, frame: view.bounds)
+        segmentedViewController.segmentedControl.itemAttributes.normalTitleColor = .red
         segmentedViewController.dataSource = self
         segmentedViewController.delegate = self
     }

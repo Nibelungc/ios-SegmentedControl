@@ -25,7 +25,6 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     
     private let replaceTitleViewForCompactHeightTraitCollection: Bool
     private var pageController: UIPageViewController!
-    private var segmentedControl: SegmentedControl!
     private var indicies = [UIViewController: Int]()
     private var currentControllerIndex: Int = 0 {
         didSet {
@@ -38,6 +37,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     
     //MARK: - Public properties
     
+    var segmentedControl = SegmentedControl()
     weak var delegate: SegmentedViewControllerContainerDelegate?
     weak var dataSource: SegmentedViewControllerContainerDataSource? {
         didSet { reloadData() }
@@ -71,12 +71,10 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         pageController.view.removeFromSuperview()
         pageController.removeFromParentViewController()
         pageController = nil
-        segmentedControl = nil
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        guard segmentedControl != nil else { return }
         guard let navigationItem = parent?.navigationItem else { return }
         
         if traitCollection.verticalSizeClass != .compact {
@@ -169,7 +167,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     }
     
     private func setupSegmentedControl(frame: CGRect) {
-        segmentedControl = SegmentedControl(frame: frame)
+        segmentedControl.frame = frame
         segmentedControl.dataSource = self
         segmentedControl.delegate = self
         segmentedControl.selectedSegmentIndex = currentControllerIndex
@@ -178,8 +176,8 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         pageController = UIPageViewController(transitionStyle: .scroll,
                                               navigationOrientation: .horizontal)
         guard let initialVC = dataSource?.initialController(in: self) else { return }
-        pageController.setViewControllers([initialVC], direction: .forward, animated: false)
         addChildViewController(pageController, toParent: self, with: frame)
+        pageController.setViewControllers([initialVC], direction: .forward, animated: false)
         pageController.view.translatesAutoresizingMaskIntoConstraints = false
         pageController.view.bindEdgesToSuperview(orientation: .horizontal)
         view.addConstraints(
