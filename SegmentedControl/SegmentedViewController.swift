@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SegmentedViewController: UIViewController, SegmentedViewControllerContainerDataSource {
+class SegmentedViewController: UIViewController, SegmentedViewControllerContainerDataSource, SegmentedViewControllerContainerDelegate {
     
     var data: Pack = .quotes
     var segmentedViewController: SegmentedViewControllerContainer!
@@ -19,6 +19,7 @@ class SegmentedViewController: UIViewController, SegmentedViewControllerContaine
         segmentedViewController = SegmentedViewControllerContainer()
         segmentedViewController.embedIn(parentViewController: self, frame: view.bounds)
         segmentedViewController.dataSource = self
+        segmentedViewController.delegate = self
     }
     
     //MARK: - SegmentedViewControllerContainerDataSource
@@ -33,6 +34,12 @@ class SegmentedViewController: UIViewController, SegmentedViewControllerContaine
     
     func controller(in container: SegmentedViewControllerContainer, atIndex index: Int) -> UIViewController? {
         return viewController(forItemWithTitle: data.items[index])
+    }
+    
+    //MARK: - SegmentedViewControllerContainerDelegate
+    
+    func segmentedViewControllerContainer(_ segmentedViewControllerContainer: SegmentedViewControllerContainer, didSelectControllerAt index: Int) {
+        print("Did select controller at index: \(index)")
     }
     
     //MARK: - Private

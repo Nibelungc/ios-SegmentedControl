@@ -16,7 +16,7 @@ protocol SegmentedViewControllerContainerDataSource: class {
 }
 
 @objc protocol SegmentedViewControllerContainerDelegate: class {
-
+    @objc optional func segmentedViewControllerContainer(_ segmentedViewControllerContainer: SegmentedViewControllerContainer, didSelectControllerAt index: Int)
 }
 
 class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource, SegmentedControlDelegate,  SegmentedControlDataSource {
@@ -28,13 +28,17 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     private var segmentedControl: SegmentedControl!
     private var indicies = [UIViewController: Int]()
     private var currentControllerIndex: Int = 0 {
-        didSet { segmentedControl.selectedSegmentIndex = currentControllerIndex }
+        didSet {
+            segmentedControl.selectedSegmentIndex = currentControllerIndex
+            delegate?.segmentedViewControllerContainer?(self, didSelectControllerAt: currentControllerIndex)
+        }
     }
     private let segmentedControlHeight: CGFloat
     private var originaNavigationTitleView: UIView?
     
     //MARK: - Public properties
     
+    weak var delegate: SegmentedViewControllerContainerDelegate?
     weak var dataSource: SegmentedViewControllerContainerDataSource? {
         didSet { reloadData() }
     }
@@ -52,7 +56,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-        
+
     private func setupUI() {
         let rects = view.bounds.divided(atDistance: segmentedControlHeight, from: .minYEdge)
         setupSegmentedControl(frame: rects.slice)
