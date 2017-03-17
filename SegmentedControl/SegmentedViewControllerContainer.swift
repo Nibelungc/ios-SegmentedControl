@@ -23,6 +23,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     
     //MARK: - Private properties
     
+    private let replaceTitleViewForCompactHeightTraitCollection: Bool
     private var pageController: UIPageViewController!
     private var segmentedControl: SegmentedControl!
     private var indicies = [UIViewController: Int]()
@@ -40,7 +41,9 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     
     //MARK: - Lifecycle
     
-    init(segmentedControlHeight: CGFloat = 40) {
+    init(segmentedControlHeight: CGFloat = 40,
+         replaceTitleViewForCompactHeightTraitCollection: Bool = true) {
+        self.replaceTitleViewForCompactHeightTraitCollection = replaceTitleViewForCompactHeightTraitCollection
         self.segmentedControlHeight = segmentedControlHeight
         super.init(nibName: nil, bundle: nil)
         setupUI()
@@ -75,7 +78,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         if traitCollection.verticalSizeClass != .compact {
             navigationItem.titleView = originaNavigationTitleView
             addSegmentedControlAsSubview(frame: .zero)
-        } else {
+        } else if replaceTitleViewForCompactHeightTraitCollection {
             originaNavigationTitleView = navigationItem.titleView
             navigationItem.titleView = segmentedControl
             segmentedControl.translatesAutoresizingMaskIntoConstraints = true
