@@ -11,12 +11,12 @@ import UIKit
 
 protocol SegmentedViewControllerContainerDataSource: class {
     func numberOfControllers(in container: SegmentedViewControllerContainer) -> Int
-    func initialController(in container: SegmentedViewControllerContainer) -> UIViewController
     func controller(in container: SegmentedViewControllerContainer, atIndex index: Int) -> UIViewController?
 }
 
 @objc protocol SegmentedViewControllerContainerDelegate: class {
     @objc optional func segmentedViewControllerContainer(_ segmentedViewControllerContainer: SegmentedViewControllerContainer, didSelectControllerAt index: Int)
+    @objc optional func segmentedViewControllerContainer(_ segmentedViewControllerContainer: SegmentedViewControllerContainer, didUpdateNavigationItem: UINavigationItem)
 }
 
 class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource, SegmentedControlDelegate,  SegmentedControlDataSource {
@@ -26,18 +26,18 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     private let replaceTitleViewForCompactHeightTraitCollection: Bool
     private var pageController: UIPageViewController!
     private var indicies = [UIViewController: Int]()
-    private var currentControllerIndex: Int = 0 {
-        didSet {
-            segmentedControl.selectedSegmentIndex = currentControllerIndex
-            delegate?.segmentedViewControllerContainer?(self, didSelectControllerAt: currentControllerIndex)
-        }
-    }
     private let segmentedControlHeight: CGFloat
     private var originaNavigationTitleView: UIView?
     
     //MARK: - Public properties
     
     var segmentedControl = SegmentedControl()
+    private(set) var currentControllerIndex: Int = 0 {
+        didSet {
+            segmentedControl.selectedSegmentIndex = currentControllerIndex
+            delegate?.segmentedViewControllerContainer?(self, didSelectControllerAt: currentControllerIndex)
+        }
+    }
     weak var delegate: SegmentedViewControllerContainerDelegate?
     weak var dataSource: SegmentedViewControllerContainerDataSource? {
         didSet { reloadData() }
@@ -87,6 +87,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
             segmentedControl.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             segmentedControl.frame = segmentedControl.superview!.bounds
         }
+        delegate?.segmentedViewControllerContainer?(self, didUpdateNavigationItem: navigationItem)
     }
     
     //MARK: - Public
@@ -175,7 +176,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     private func setupPageController(frame: CGRect) {
         pageController = UIPageViewController(transitionStyle: .scroll,
                                               navigationOrientation: .horizontal)
-        guard let initialVC = dataSource?.initialController(in: self) else { return }
+        guard let initialVC = controller(at: 0) else { return }
         addChildViewController(pageController, toParent: self, with: frame)
         pageController.setViewControllers([initialVC], direction: .forward, animated: false)
         pageController.view.translatesAutoresizingMaskIntoConstraints = false

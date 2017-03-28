@@ -19,6 +19,7 @@ class SegmentedViewController: UIViewController, SegmentedViewControllerContaine
         segmentedViewController = SegmentedViewControllerContainer()
         segmentedViewController.embedIn(parentViewController: self, frame: view.bounds)
         segmentedViewController.segmentedControl.itemAttributes.normalTitleColor = .red
+        segmentedViewController.segmentedControl.itemAttributes.margins = 4.0
         segmentedViewController.dataSource = self
         segmentedViewController.delegate = self
     }
@@ -27,10 +28,6 @@ class SegmentedViewController: UIViewController, SegmentedViewControllerContaine
     
     func numberOfControllers(in container: SegmentedViewControllerContainer) -> Int {
         return data.items.count
-    }
-    
-    func initialController(in container: SegmentedViewControllerContainer) -> UIViewController {
-        return viewController(forItemWithTitle: data.items.first!)
     }
     
     func controller(in container: SegmentedViewControllerContainer, atIndex index: Int) -> UIViewController? {

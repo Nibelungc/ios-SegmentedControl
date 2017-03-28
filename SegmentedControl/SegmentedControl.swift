@@ -124,7 +124,7 @@ class SegmentedControl: UIView {
         scrollView.bindEdgesToSuperview()
         scrollView.addSubview(contentView)
         contentView.bindEdgesToSuperview()
-        addConstraint(NSLayoutConstraint(item: contentView, attribute: .height, relatedBy: .lessThanOrEqual, toItem: self, attribute: .height, multiplier: 1.0, constant: 0.0))
+        addConstraint(NSLayoutConstraint(item: contentView, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 1.0, constant: 0.0))
     }
     
     private func setupSelectionIndicator() {
@@ -164,6 +164,7 @@ class SegmentedControl: UIView {
     }
     
     private func configureSegmentsLayout() {
+        defer { layoutIfNeeded() }
         resetContentSizeToFit()
         let needToFillContentView = contentView.bounds.size.width < bounds.size.width
         let priority = needToFillContentView ? UILayoutPriorityDefaultLow : UILayoutPriorityDefaultHigh
@@ -174,9 +175,10 @@ class SegmentedControl: UIView {
         }()
         segments.forEach { segment in
             segment.setContentHuggingPriority(priority, for: .horizontal)
-            segment.attributes.width = .fixed(itemRelativeWidth)
+            if needToFillContentView {
+                segment.attributes.width = .fixed(itemRelativeWidth)
+            }
         }
-        layoutIfNeeded()
     }
     
     private func resetContentSizeToFit() {
@@ -217,7 +219,7 @@ class SegmentedControl: UIView {
         var frame = segment.frame
         frame.size.height = attributes.selectionIndicatorHeight
         frame.origin.y = segment.frame.height - frame.height
-        if selectionIndicator.frame.isEmpty {
+        if selectionIndicator.frame.origin.y != frame.origin.y {
             selectionIndicator.frame = frame
         } else {
             executeAnimated { self.selectionIndicator.frame = frame }
