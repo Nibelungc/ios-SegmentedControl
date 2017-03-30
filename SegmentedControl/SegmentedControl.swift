@@ -164,7 +164,6 @@ class SegmentedControl: UIView {
     }
     
     private func configureSegmentsLayout() {
-        defer { layoutIfNeeded() }
         resetContentSizeToFit()
         let needToFillContentView = contentView.bounds.size.width < bounds.size.width
         let priority = needToFillContentView ? UILayoutPriorityDefaultLow : UILayoutPriorityDefaultHigh
@@ -179,6 +178,8 @@ class SegmentedControl: UIView {
                 segment.attributes.width = .fixed(itemRelativeWidth)
             }
         }
+        setNeedsLayout()
+        layoutIfNeeded()
     }
     
     private func resetContentSizeToFit() {
@@ -211,7 +212,7 @@ class SegmentedControl: UIView {
         scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
     }
     
-    private func updateSelectionIndicatorPosition(animated: Bool = true) {
+    private func updateSelectionIndicatorPosition() {
         guard let segment = selectedSegment else {
             selectionIndicator.frame = .zero
             return
