@@ -114,6 +114,10 @@ class SegmentedControl: UIView {
         reloadData()
     }
     
+    override var intrinsicContentSize: CGSize {
+        return UILayoutFittingExpandedSize
+    }
+    
     //MARK: - Inital setup
     
     private func setupScrollView() {

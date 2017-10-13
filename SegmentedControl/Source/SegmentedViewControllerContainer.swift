@@ -93,9 +93,15 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         } else if replaceTitleViewForCompactHeightTraitCollection {
             originaNavigationTitleView = navigationItem.titleView
             navigationItem.titleView = segmentedControl
-            segmentedControl.translatesAutoresizingMaskIntoConstraints = true
-            segmentedControl.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            segmentedControl.frame = segmentedControl.superview!.bounds
+            
+            func systemVersionLessThan(version: NSString) -> Bool {
+                return UIDevice.current.systemVersion.compare(version as String, options: .numeric) == .orderedAscending
+            }
+            if systemVersionLessThan(version: "11") {
+                segmentedControl.translatesAutoresizingMaskIntoConstraints = true
+                segmentedControl.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                segmentedControl.frame = segmentedControl.superview!.bounds
+            }
         }
         delegate?.segmentedViewControllerContainer?(self, didUpdateNavigationItem: navigationItem)
     }
