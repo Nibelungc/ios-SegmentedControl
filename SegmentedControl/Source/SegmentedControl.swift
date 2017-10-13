@@ -166,7 +166,7 @@ class SegmentedControl: UIView {
     private func configureSegmentsLayout() {
         resetContentSizeToFit()
         let needToFillContentView = contentView.bounds.size.width < bounds.size.width
-        let priority = needToFillContentView ? UILayoutPriorityDefaultLow : UILayoutPriorityDefaultHigh
+        let priority = needToFillContentView ? UILayoutPriority.defaultLow : UILayoutPriority.defaultHigh
         let itemRelativeWidth: CGFloat = {
             let itemBestWidth = bounds.size.width / CGFloat(segments.count)
             let itemMaxWidth = segments.map { $0.bounds.size.width }.max() ?? 0
@@ -184,7 +184,7 @@ class SegmentedControl: UIView {
     
     private func resetContentSizeToFit() {
         segments.forEach { segment in
-            segment.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .horizontal)
+            segment.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
             segment.attributes.width = .fitToContent
         }
         layoutIfNeeded()
@@ -229,7 +229,7 @@ class SegmentedControl: UIView {
     
     //MARK: - Actions
     
-    func segmentButtonTapped(sender: SegmentedControlItem) {
+    @objc func segmentButtonTapped(sender: SegmentedControlItem) {
         let index = segments.index(of: sender)
         guard index != selectedSegmentIndex else { return }
         selectedSegmentIndex = index

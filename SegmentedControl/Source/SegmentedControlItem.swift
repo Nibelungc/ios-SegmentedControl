@@ -74,8 +74,8 @@ class SegmentedControlItem: UIControl {
         titleButton.translatesAutoresizingMaskIntoConstraints = false
         titleButton.bindEdgesToSuperview(orientation: .vertical)
         titleButton.bindEdgesToSuperview(padding: attributes.margins, orientation: .horizontal)
-        titleButton.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
-        titleButton.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
+        titleButton.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .horizontal)
+        titleButton.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
         titleButton.isUserInteractionEnabled = false
     }
     
