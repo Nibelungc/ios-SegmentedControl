@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.author       = { "Nibelungc" => "nibelungc@gmail.com" }
   s.license      = "MIT"
 
-  s.platform     = :ios, '8.1'
+  s.platform     = :ios, '8.0'
 
   s.source       = { :git => "https://github.com/elegion/ios-SegmentedControl.git", :tag => "v#{s.version}" }
   s.source_files  = "Source/**/*"
