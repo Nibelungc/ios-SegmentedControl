@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		95CCBF191F90DD5300047795 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CCBF151F90DD5300047795 /* SegmentedControl.swift */; };
-		95CCBF1A1F90DD5300047795 /* SegmentedControlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CCBF161F90DD5300047795 /* SegmentedControlItem.swift */; };
-		95CCBF1B1F90DD5300047795 /* SegmentedViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CCBF171F90DD5300047795 /* SegmentedViewControllerContainer.swift */; };
-		95CCBF1C1F90DD5300047795 /* UIView+LayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CCBF181F90DD5300047795 /* UIView+LayoutHelper.swift */; };
+		95CCBF211F90E63000047795 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CCBF1D1F90E62000047795 /* SegmentedControl.swift */; };
+		95CCBF221F90E63000047795 /* SegmentedControlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CCBF1E1F90E62000047795 /* SegmentedControlItem.swift */; };
+		95CCBF231F90E63000047795 /* SegmentedViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CCBF201F90E62000047795 /* SegmentedViewControllerContainer.swift */; };
+		95CCBF241F90E63000047795 /* UIView+LayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CCBF1F1F90E62000047795 /* UIView+LayoutHelper.swift */; };
 		CF3CCAF81E7A81A40074E244 /* SegmentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3CCAF71E7A81A40074E244 /* SegmentedViewController.swift */; };
 		CFA5B7B21E78307600D9AB13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA5B7B11E78307600D9AB13 /* AppDelegate.swift */; };
 		CFA5B7B41E78307600D9AB13 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA5B7B31E78307600D9AB13 /* ViewController.swift */; };
@@ -20,10 +20,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		95CCBF151F90DD5300047795 /* SegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
-		95CCBF161F90DD5300047795 /* SegmentedControlItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlItem.swift; sourceTree = "<group>"; };
-		95CCBF171F90DD5300047795 /* SegmentedViewControllerContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedViewControllerContainer.swift; sourceTree = "<group>"; };
-		95CCBF181F90DD5300047795 /* UIView+LayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LayoutHelper.swift"; sourceTree = "<group>"; };
+		95CCBF1D1F90E62000047795 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SegmentedControl.swift; path = SegmentedControl/SegmentedControl.swift; sourceTree = SOURCE_ROOT; };
+		95CCBF1E1F90E62000047795 /* SegmentedControlItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SegmentedControlItem.swift; path = SegmentedControl/SegmentedControlItem.swift; sourceTree = SOURCE_ROOT; };
+		95CCBF1F1F90E62000047795 /* UIView+LayoutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIView+LayoutHelper.swift"; path = "SegmentedControl/UIView+LayoutHelper.swift"; sourceTree = SOURCE_ROOT; };
+		95CCBF201F90E62000047795 /* SegmentedViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SegmentedViewControllerContainer.swift; path = SegmentedControl/SegmentedViewControllerContainer.swift; sourceTree = SOURCE_ROOT; };
 		CF3CCAF71E7A81A40074E244 /* SegmentedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedViewController.swift; sourceTree = "<group>"; };
 		CFA5B7AE1E78307600D9AB13 /* SegmentedControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SegmentedControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFA5B7B11E78307600D9AB13 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -45,15 +45,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		95CCBF141F90DD5300047795 /* Source */ = {
+		951048151F90EE30002A58E3 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				95CCBF151F90DD5300047795 /* SegmentedControl.swift */,
-				95CCBF161F90DD5300047795 /* SegmentedControlItem.swift */,
-				95CCBF171F90DD5300047795 /* SegmentedViewControllerContainer.swift */,
-				95CCBF181F90DD5300047795 /* UIView+LayoutHelper.swift */,
+				95CCBF1D1F90E62000047795 /* SegmentedControl.swift */,
+				95CCBF1E1F90E62000047795 /* SegmentedControlItem.swift */,
+				95CCBF201F90E62000047795 /* SegmentedViewControllerContainer.swift */,
+				95CCBF1F1F90E62000047795 /* UIView+LayoutHelper.swift */,
 			);
-			path = Source;
+			name = Source;
 			sourceTree = "<group>";
 		};
 		CFA5B7A51E78307600D9AB13 = {
@@ -75,7 +75,7 @@
 		CFA5B7B01E78307600D9AB13 /* SegmentedControl */ = {
 			isa = PBXGroup;
 			children = (
-				95CCBF141F90DD5300047795 /* Source */,
+				951048151F90EE30002A58E3 /* Source */,
 				CFA5B7C31E78307D00D9AB13 /* App */,
 				CFA5B7B31E78307600D9AB13 /* ViewController.swift */,
 				CF3CCAF71E7A81A40074E244 /* SegmentedViewController.swift */,
@@ -170,11 +170,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFA5B7B41E78307600D9AB13 /* ViewController.swift in Sources */,
-				95CCBF1B1F90DD5300047795 /* SegmentedViewControllerContainer.swift in Sources */,
-				95CCBF1C1F90DD5300047795 /* UIView+LayoutHelper.swift in Sources */,
+				95CCBF231F90E63000047795 /* SegmentedViewControllerContainer.swift in Sources */,
+				95CCBF241F90E63000047795 /* UIView+LayoutHelper.swift in Sources */,
 				CFA5B7B21E78307600D9AB13 /* AppDelegate.swift in Sources */,
-				95CCBF1A1F90DD5300047795 /* SegmentedControlItem.swift in Sources */,
-				95CCBF191F90DD5300047795 /* SegmentedControl.swift in Sources */,
+				95CCBF221F90E63000047795 /* SegmentedControlItem.swift in Sources */,
+				95CCBF211F90E63000047795 /* SegmentedControl.swift in Sources */,
 				CF3CCAF81E7A81A40074E244 /* SegmentedViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
