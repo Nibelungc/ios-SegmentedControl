@@ -20,7 +20,3 @@ fastlane/report.xml
 fastlane/README.md
 fastlane/*report*
 *app.dSYM.zip
-
-# API Library Files
-Wrappers/Vendor
-Wrappers/Output
