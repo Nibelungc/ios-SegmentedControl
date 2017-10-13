@@ -13,7 +13,7 @@ enum SegmentedControlItemWidth {
     case fitToContent
 }
 
-struct SegmentedControlItemAttributes {
+class SegmentedControlItemAttributes: NSObject {
     var backgroundColor: UIColor = .clear
     var highlightedBackgroundColor: UIColor = UIColor.black.withAlphaComponent(0.15)
     var normalTitleColor: UIColor = .gray

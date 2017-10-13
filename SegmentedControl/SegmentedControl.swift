@@ -17,7 +17,7 @@ protocol SegmentedControlDataSource: class {
     @objc optional func segmentedControl(_ segmentedControl: SegmentedControl, didSelectItemAt index: Int)
 }
 
-struct SegmentedControlAttributes {
+class SegmentedControlAttributes: NSObject {
     var interitemSpacing: CGFloat = 0.0
     var itemWidth: SegmentedControlItemWidth = .fitToContent
     var selectionIndicatorColor: UIColor = .red
