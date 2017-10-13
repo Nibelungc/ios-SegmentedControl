@@ -7,19 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		95CCBF191F90DD5300047795 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CCBF151F90DD5300047795 /* SegmentedControl.swift */; };
+		95CCBF1A1F90DD5300047795 /* SegmentedControlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CCBF161F90DD5300047795 /* SegmentedControlItem.swift */; };
+		95CCBF1B1F90DD5300047795 /* SegmentedViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CCBF171F90DD5300047795 /* SegmentedViewControllerContainer.swift */; };
+		95CCBF1C1F90DD5300047795 /* UIView+LayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CCBF181F90DD5300047795 /* UIView+LayoutHelper.swift */; };
 		CF3CCAF81E7A81A40074E244 /* SegmentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3CCAF71E7A81A40074E244 /* SegmentedViewController.swift */; };
 		CFA5B7B21E78307600D9AB13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA5B7B11E78307600D9AB13 /* AppDelegate.swift */; };
 		CFA5B7B41E78307600D9AB13 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA5B7B31E78307600D9AB13 /* ViewController.swift */; };
 		CFA5B7B71E78307600D9AB13 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFA5B7B51E78307600D9AB13 /* Main.storyboard */; };
 		CFA5B7B91E78307600D9AB13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFA5B7B81E78307600D9AB13 /* Assets.xcassets */; };
 		CFA5B7BC1E78307600D9AB13 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFA5B7BA1E78307600D9AB13 /* LaunchScreen.storyboard */; };
-		CFA5B7C81E78309800D9AB13 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA5B7C51E78309800D9AB13 /* SegmentedControl.swift */; };
-		CFA5B7C91E78309800D9AB13 /* SegmentedControlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA5B7C61E78309800D9AB13 /* SegmentedControlItem.swift */; };
-		CFA5B7CA1E78309800D9AB13 /* UIView+LayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA5B7C71E78309800D9AB13 /* UIView+LayoutHelper.swift */; };
-		CFEA88421E797EF700627AD0 /* SegmentedViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA88411E797EF700627AD0 /* SegmentedViewControllerContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		95CCBF151F90DD5300047795 /* SegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
+		95CCBF161F90DD5300047795 /* SegmentedControlItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlItem.swift; sourceTree = "<group>"; };
+		95CCBF171F90DD5300047795 /* SegmentedViewControllerContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedViewControllerContainer.swift; sourceTree = "<group>"; };
+		95CCBF181F90DD5300047795 /* UIView+LayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LayoutHelper.swift"; sourceTree = "<group>"; };
 		CF3CCAF71E7A81A40074E244 /* SegmentedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedViewController.swift; sourceTree = "<group>"; };
 		CFA5B7AE1E78307600D9AB13 /* SegmentedControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SegmentedControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFA5B7B11E78307600D9AB13 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -28,10 +32,6 @@
 		CFA5B7B81E78307600D9AB13 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CFA5B7BB1E78307600D9AB13 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CFA5B7BD1E78307600D9AB13 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CFA5B7C51E78309800D9AB13 /* SegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
-		CFA5B7C61E78309800D9AB13 /* SegmentedControlItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlItem.swift; sourceTree = "<group>"; };
-		CFA5B7C71E78309800D9AB13 /* UIView+LayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LayoutHelper.swift"; sourceTree = "<group>"; };
-		CFEA88411E797EF700627AD0 /* SegmentedViewControllerContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedViewControllerContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +45,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		95CCBF141F90DD5300047795 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				95CCBF151F90DD5300047795 /* SegmentedControl.swift */,
+				95CCBF161F90DD5300047795 /* SegmentedControlItem.swift */,
+				95CCBF171F90DD5300047795 /* SegmentedViewControllerContainer.swift */,
+				95CCBF181F90DD5300047795 /* UIView+LayoutHelper.swift */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 		CFA5B7A51E78307600D9AB13 = {
 			isa = PBXGroup;
 			children = (
@@ -64,8 +75,8 @@
 		CFA5B7B01E78307600D9AB13 /* SegmentedControl */ = {
 			isa = PBXGroup;
 			children = (
+				95CCBF141F90DD5300047795 /* Source */,
 				CFA5B7C31E78307D00D9AB13 /* App */,
-				CFA5B7C41E78308200D9AB13 /* Source */,
 				CFA5B7B31E78307600D9AB13 /* ViewController.swift */,
 				CF3CCAF71E7A81A40074E244 /* SegmentedViewController.swift */,
 			);
@@ -82,17 +93,6 @@
 				CFA5B7BD1E78307600D9AB13 /* Info.plist */,
 			);
 			name = App;
-			sourceTree = "<group>";
-		};
-		CFA5B7C41E78308200D9AB13 /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				CFA5B7C51E78309800D9AB13 /* SegmentedControl.swift */,
-				CFA5B7C61E78309800D9AB13 /* SegmentedControlItem.swift */,
-				CFEA88411E797EF700627AD0 /* SegmentedViewControllerContainer.swift */,
-				CFA5B7C71E78309800D9AB13 /* UIView+LayoutHelper.swift */,
-			);
-			name = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,12 +169,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFA5B7B41E78307600D9AB13 /* ViewController.swift in Sources */,
-				CFEA88421E797EF700627AD0 /* SegmentedViewControllerContainer.swift in Sources */,
-				CFA5B7C91E78309800D9AB13 /* SegmentedControlItem.swift in Sources */,
-				CFA5B7C81E78309800D9AB13 /* SegmentedControl.swift in Sources */,
+				95CCBF1B1F90DD5300047795 /* SegmentedViewControllerContainer.swift in Sources */,
+				95CCBF1C1F90DD5300047795 /* UIView+LayoutHelper.swift in Sources */,
 				CFA5B7B21E78307600D9AB13 /* AppDelegate.swift in Sources */,
+				95CCBF1A1F90DD5300047795 /* SegmentedControlItem.swift in Sources */,
+				95CCBF191F90DD5300047795 /* SegmentedControl.swift in Sources */,
 				CF3CCAF81E7A81A40074E244 /* SegmentedViewController.swift in Sources */,
-				CFA5B7CA1E78309800D9AB13 /* UIView+LayoutHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
