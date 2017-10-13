@@ -8,20 +8,20 @@
 
 import UIKit
 
-
-protocol SegmentedViewControllerContainerDataSource: class {
+@objc protocol SegmentedViewControllerContainerDataSource: class {
     func numberOfControllers(in container: SegmentedViewControllerContainer) -> Int
     func controller(in container: SegmentedViewControllerContainer, atIndex index: Int) -> UIViewController?
 }
 
 @objc protocol SegmentedViewControllerContainerDelegate: class {
     @objc optional func segmentedViewControllerContainer(_ segmentedViewControllerContainer: SegmentedViewControllerContainer, didSelectControllerAt index: Int)
+    @objc optional func segmentedViewControllerContainer(_ segmentedViewControllerContainer: SegmentedViewControllerContainer, willSelectControllerAt index: Int)
     @objc optional func segmentedViewControllerContainer(_ segmentedViewControllerContainer: SegmentedViewControllerContainer, didUpdateNavigationItem: UINavigationItem)
 }
 
 class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource, SegmentedControlDelegate,  SegmentedControlDataSource {
     
-    //MARK: - Private properties
+    // MARK: - Private properties
     
     private let replaceTitleViewForCompactHeightTraitCollection: Bool
     private var pageController: UIPageViewController!
@@ -29,21 +29,31 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     private let segmentedControlHeight: CGFloat
     private var originaNavigationTitleView: UIView?
     
-    //MARK: - Public properties
+    // MARK: - Public properties
     
-    var segmentedControl = SegmentedControl()
-    private(set) var currentControllerIndex: Int = 0 {
+    private var _currentControllerIndex: Int = 0 {
+        willSet {
+            delegate?.segmentedViewControllerContainer?(self, willSelectControllerAt: newValue)
+        }
         didSet {
-            segmentedControl.selectedSegmentIndex = currentControllerIndex
-            delegate?.segmentedViewControllerContainer?(self, didSelectControllerAt: currentControllerIndex)
+            segmentedControl.selectedSegmentIndex = _currentControllerIndex
+            delegate?.segmentedViewControllerContainer?(self, didSelectControllerAt: _currentControllerIndex)
         }
     }
+    var currentControllerIndex: Int {
+        get { return _currentControllerIndex }
+        set {
+            segmentedControl.selectedSegmentIndex = newValue
+            segmentedControl(segmentedControl, didSelectItemAt: newValue)
+        }
+    }
+    var segmentedControl = SegmentedControl()
     weak var delegate: SegmentedViewControllerContainerDelegate?
     weak var dataSource: SegmentedViewControllerContainerDataSource? {
         didSet { reloadData() }
     }
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     
     init(segmentedControlHeight: CGFloat = 40,
          replaceTitleViewForCompactHeightTraitCollection: Bool = true) {
@@ -66,7 +76,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     private func removeUIAndResetState() {
         segmentedControl.removeFromSuperview()
         indicies.removeAll()
-        currentControllerIndex = 0
+        _currentControllerIndex = 0
         pageController.willMove(toParentViewController: nil)
         pageController.view.removeFromSuperview()
         pageController.removeFromParentViewController()
@@ -90,7 +100,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         delegate?.segmentedViewControllerContainer?(self, didUpdateNavigationItem: navigationItem)
     }
     
-    //MARK: - Public
+    // MARK: - Public
     
     func embedIn(parentViewController: UIViewController, frame: CGRect) {
         addChildViewController(self, toParent: parentViewController, with: frame)
@@ -101,7 +111,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         setupUI()
     }
     
-    //MARK: - UIPageViewControllerDataSource
+    // MARK: - UIPageViewControllerDataSource
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         return viewControlerCalculatingIndex(calculation: -)
@@ -111,7 +121,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         return viewControlerCalculatingIndex(calculation: +)
     }
     
-    //MARK: - UIPageViewControllerDelegate
+    // MARK: - UIPageViewControllerDelegate
     
     func pageViewController(_ pageViewController: UIPageViewController,
                             didFinishAnimating finished: Bool,
@@ -120,11 +130,11 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         guard let controller = pageViewController.viewControllers?.last else { return }
         guard completed else { return }
         if let index = indicies[controller] {
-            currentControllerIndex = index
+            _currentControllerIndex = index
         }
     }
     
-    //MARK: - SegmentedControlDataSource
+    // MARK: - SegmentedControlDataSource
     
     func numberOfItems(in segmentedControl: SegmentedControl) -> Int {
         guard let dataSource = dataSource else { return 0 }
@@ -137,16 +147,16 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         return controller?.title ?? String(index)
     }
     
-    //MARK: - SegmentedControlDelegate
+    // MARK: - SegmentedControlDelegate
     
     func segmentedControl(_ segmentedControl: SegmentedControl, didSelectItemAt index: Int) {
         guard let controller = controller(at: index) else { return }
-        let direction: UIPageViewControllerNavigationDirection = index > currentControllerIndex ? .forward : .reverse
+        let direction: UIPageViewControllerNavigationDirection = index > _currentControllerIndex ? .forward : .reverse
         pageController.setViewControllers([controller], direction: direction, animated: true, completion: nil)
-        currentControllerIndex = index
+        _currentControllerIndex = index
     }
     
-    //MARK: - Private
+    // MARK: - Private
     
     private func controller(at index: Int) -> UIViewController? {
         guard let dataSource = dataSource else { return nil }
@@ -171,7 +181,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
         segmentedControl.frame = frame
         segmentedControl.dataSource = self
         segmentedControl.delegate = self
-        segmentedControl.selectedSegmentIndex = currentControllerIndex
+        segmentedControl.selectedSegmentIndex = _currentControllerIndex
     }
     private func setupPageController(frame: CGRect) {
         pageController = UIPageViewController(transitionStyle: .scroll,
@@ -200,7 +210,7 @@ class SegmentedViewControllerContainer: UIViewController, UIPageViewControllerDe
     
     private func viewControlerCalculatingIndex(calculation: (Int, Int) -> Int) -> UIViewController? {
         guard let dataSource = dataSource else { return nil }
-        let newIndex = calculation(currentControllerIndex, 1)
+        let newIndex = calculation(_currentControllerIndex, 1)
         guard (0..<dataSource.numberOfControllers(in: self)).contains(newIndex) else { return nil }
         return controller(at: newIndex)
     }
